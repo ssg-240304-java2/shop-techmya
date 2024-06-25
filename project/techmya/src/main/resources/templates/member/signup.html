@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function checkUserId() {
+            var userId = document.getElementById("inputId").value;
+            if (userId.trim() === "") {
+                alert("사용자 아이디를 입력해주세요.");
+                return;
+            }
+
+            // Ajax 요청
+            $.ajax({
+                type: 'GET',
+                url: '/checkUserId',
+                data: { userId: userId },
+                success: function(response) {
+                    if (response === 'exists') {
+                        alert('이미 사용 중인 사용자 아이디입니다.');
+                    } else {
+                        alert('사용 가능한 사용자 아이디입니다.');
+                    }
+                },
+                error: function() {
+                    alert('서버 오류입니다. 다시 시도해주세요.');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('#signupForm').submit(function(event) {
+                event.preventDefault(); // 기본 동작 중지
+
+                var formData = {
+                    userId: $('#inputId').val(),
+                    userPw: $('#inputPassword').val(),
+                    userAuth: '2', // 일반 사용자의 권한은 2로 설정
+                    userName: $('#inputName').val(),
+                    userBirth: $('#inputBirth').val(),
+                    userPhone: $('#inputPhone').val(),
+                    userEmail: $('#inputEmail').val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/register',
+                    data: formData,
+                    success: function(response) {
+                        if (response === 'success') {
+                            alert('회원가입 성공!');
+                        } else {
+                            alert('회원가입 실패. 다시 시도해주세요.');
+                        }
+                    },
+                    error: function() {
+                        alert('서버 오류입니다. 다시 시도해주세요.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>회원가입</h1>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="inputId">UserId</label>
+            <input type="text" class="form-control" id="inputId" name="userId" placeholder="사용자 아이디" required>
+            <button type="button" class="btn btn-info" onclick="checkUserId()">중복 확인</button>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" name="userPw" placeholder="사용자 비밀번호" required>
+        </div>
+        <div class="form-group">
+            <label for="inputName">UserName</label>
+            <input type="text" class="form-control" id="inputName" name="userName" placeholder="사용자 이름" required>
+        </div>
+        <div class="form-group">
+            <label for="inputBirth">Birth</label>
+            <input type="text" class="form-control" id="inputBirth" name="userBirth" placeholder="생년월일" required>
+        </div>
+        <div class="form-group">
+            <label for="inputPhone">Phone</label>
+            <input type="text" class="form-control" id="inputPhone" name="userPhone" placeholder="전화번호" required>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input type="text" class="form-control" id="inputEmail" name="userEmail" placeholder="이메일" required>
+        </div>
+        <button type="submit" class="btn btn-primary">가입 완료</button>
+    </form>
+</div>
+</body>
+</html>

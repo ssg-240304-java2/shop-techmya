@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohgiraffers.techmya.member.model.dao.UserMapper">
+    <insert id="insert" parameterType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
+        INSERT INTO personal_info
+            (USER_NAME, USER_BIRTH, USER_PHONE, USER_EMAIL)
+        VALUES (#{userName}, #{userBirth}, #{userPhone}, #{userEmail});
+
+        INSERT INTO user_info
+            (USER_ID, USER_PW, USER_AUTH, Registerd_date)
+        VALUES (#{userId}, #{userPw}, 2, current_date)
+    </insert>
+
+    <select id="findByUserId" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
+        SELECT *
+        FROM user_info
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="authenticateUser" parameterType="com.ohgiraffers.techmya.member.model.dto.UserDTO" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
+        SELECT USER_ID, USER_PW
+        FROM user_info
+        WHERE USER_ID = #{userId} AND USER_PW = #{userPw}
+    </select>
+</mapper>
