@@ -5,23 +5,30 @@
 <mapper namespace="com.ohgiraffers.techmya.member.model.dao.UserMapper">
     <insert id="insert" parameterType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
         INSERT INTO personal_info
-            (USER_NAME, USER_BIRTH, USER_PHONE, USER_EMAIL)
+            (name, birth, phone, email)
         VALUES (#{userName}, #{userBirth}, #{userPhone}, #{userEmail});
 
         INSERT INTO user_info
-            (USER_ID, USER_PW, USER_AUTH, Registerd_date)
+            (USER_ID, user_password, authority, registered_date)
         VALUES (#{userId}, #{userPw}, 2, current_date)
     </insert>
 
-    <select id="findByUserId" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
+    <select id="findByUserId" parameterType="String" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
         SELECT *
-        FROM user_info
-        WHERE USER_ID = #{userId}
+        FROM user_info a
+                 LEFT JOIN personal_info b
+                           ON a.user_no = b.user_no
+        WHERE a.USER_ID = #{userId};
     </select>
 
-    <select id="authenticateUser" parameterType="com.ohgiraffers.techmya.member.model.dto.UserDTO" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
-        SELECT USER_ID, USER_PW
+    <select id="authenticateUser" parameterType="map" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
+        SELECT user_no, USER_ID, user_password, authority
         FROM user_info
-        WHERE USER_ID = #{userId} AND USER_PW = #{userPw}
+        WHERE USER_ID = #{userId} AND user_password = #{userPw}
     </select>
+
+    <insert id="insertLog" parameterType="map">
+        INSERT INTO log_info (user_no)
+        VALUES (#{userNo})
+    </insert>
 </mapper>

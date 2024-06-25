@@ -26,6 +26,7 @@ public class UserService {
     public UserDTO authenticateUser(String userId, String userPw) {
         UserDTO userDTO = userMapper.authenticateUser(userId, userPw);
         if (userDTO != null && userDTO.getUserPw().equals(userPw)) {
+            userMapper.insertLog(userDTO.getUserNo()); // 로그인 성공 시 로그 기록
             return userDTO;
         } else {
             return null;

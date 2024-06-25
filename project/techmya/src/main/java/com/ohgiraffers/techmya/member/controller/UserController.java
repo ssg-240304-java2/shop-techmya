@@ -23,31 +23,29 @@ public class UserController {
 
     @GetMapping("/signup")
     public String signupPage() {
-        return "signup"; // signup.html 페이지로 이동
+        return "member/signup"; // member/signup.html 페이지로 이동
     }
 
-    @GetMapping("/register")
-    public @ResponseBody String registerUser(
-            @RequestParam String userId,
-            @RequestParam String userPw,
-            @RequestParam String userAuth,
-            @RequestParam String userName,
-            @RequestParam String userBirth,
-            @RequestParam String userPhone,
-            @RequestParam String userEmail) {
+    @PostMapping("/register")
+    public String registerUser(@RequestParam String userId,
+                               @RequestParam String userPw,
+                               @RequestParam String userName,
+                               @RequestParam String userBirth,
+                               @RequestParam String userPhone,
+                               @RequestParam String userEmail) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(userId);
+        userDTO.setUserPw(userPw);
+        userDTO.setUserName(userName);
+        userDTO.setUserBirth(userBirth);
+        userDTO.setUserPhone(userPhone);
+        userDTO.setUserEmail(userEmail);
+
         try {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUserId(userId);
-            userDTO.setUserPw(userPw);
-            userDTO.setUserAuth(userAuth);
-            userDTO.setUserName(userName);
-            userDTO.setUserBirth(userBirth);
-            userDTO.setUserPhone(userPhone);
-            userDTO.setUserEmail(userEmail);
             userService.registerUser(userDTO); // 회원가입 시도
-            return "success"; // 성공적으로 처리된 경우
+            return "redirect:/login"; // 회원가입 성공 시 로그인 페이지로 이동
         } catch (Exception e) {
-            return "fail"; // 실패한 경우
+            return "redirect:/signup"; // 회원가입 실패 시 다시 회원가입 페이지로 이동
         }
     }
 
@@ -65,16 +63,18 @@ public class UserController {
         return "member/login"; // templates/member/login.html 페이지로 이동
     }
 
-    @GetMapping("/authenticate")
-    public @ResponseBody UserDTO authenticateUser(
-            @RequestParam String userId,
-            @RequestParam String userPw) {
+    @PostMapping("/authenticate")
+    public @ResponseBody String authenticateUser(@RequestParam String userId, @RequestParam String userPw) {
         UserDTO authenticatedUser = userService.authenticateUser(userId, userPw);
 
         if (authenticatedUser != null) {
-            return authenticatedUser; // 로그인 성공
+            if ("1".equals(authenticatedUser.getUserAuth())) {
+                return "admin"; // 관리자 페이지로 리디렉션
+            } else {
+                return "user"; // 쇼핑몰 메인 페이지로 리디렉션
+            }
         } else {
-            return null; // 로그인 실패
+            return "fail"; // 로그인 실패
         }
     }
 }

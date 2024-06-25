@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>회원가입 페이지</title>
@@ -30,44 +30,12 @@
                 }
             });
         }
-
-        $(document).ready(function() {
-            $('#signupForm').submit(function(event) {
-                event.preventDefault(); // 기본 동작 중지
-
-                var formData = {
-                    userId: $('#inputId').val(),
-                    userPw: $('#inputPassword').val(),
-                    userAuth: '2', // 일반 사용자의 권한은 2로 설정
-                    userName: $('#inputName').val(),
-                    userBirth: $('#inputBirth').val(),
-                    userPhone: $('#inputPhone').val(),
-                    userEmail: $('#inputEmail').val()
-                };
-
-                $.ajax({
-                    type: 'GET',
-                    url: '/register',
-                    data: formData,
-                    success: function(response) {
-                        if (response === 'success') {
-                            alert('회원가입 성공!');
-                        } else {
-                            alert('회원가입 실패. 다시 시도해주세요.');
-                        }
-                    },
-                    error: function() {
-                        alert('서버 오류입니다. 다시 시도해주세요.');
-                    }
-                });
-            });
-        });
     </script>
 </head>
 <body>
 <div class="container">
     <h1>회원가입</h1>
-    <form id="signupForm">
+    <form id="signupForm" method="post" action="/register">
         <div class="form-group">
             <label for="inputId">UserId</label>
             <input type="text" class="form-control" id="inputId" name="userId" placeholder="사용자 아이디" required>
@@ -91,7 +59,7 @@
         </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input type="text" class="form-control" id="inputEmail" name="userEmail" placeholder="이메일" required>
+            <input type="email" class="form-control" id="inputEmail" name="userEmail" placeholder="이메일" required>
         </div>
         <button type="submit" class="btn btn-primary">가입 완료</button>
     </form>
