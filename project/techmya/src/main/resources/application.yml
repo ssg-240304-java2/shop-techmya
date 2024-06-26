@@ -1,18 +1,10 @@
 spring:
   application:
     name: techmya
-#    thymeleaf:
-#      prefix: classpath:/templates/
-#      suffix: .html
-#      mode: HTML5
-#      cache: false
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://ssg-java2.iptime.org/techdb
     username: tcat
     password: 1111
-
-mybatis:
-  mapper-locations: mappers/**/*.xml
-
+  mybatis:
+    mapper-locations: mappers/**/*.xml
