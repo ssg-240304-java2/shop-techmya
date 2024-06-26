@@ -23,7 +23,7 @@ public class StockController {
 
     @GetMapping("/stockmain")
     public String stockmain() {
-        return "admin/stock/stockmain";
+        return "/admin/stock/stockmain";
     }
 
     @GetMapping("/stockmanage")

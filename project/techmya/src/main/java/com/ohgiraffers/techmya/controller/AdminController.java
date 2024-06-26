@@ -11,7 +11,7 @@ public class AdminController {
     @GetMapping("main")
     public String getAdmin(){
 
-        return "admin/main";
+        return "admin-main";
     }
 
     @GetMapping("stock/stockmain")
