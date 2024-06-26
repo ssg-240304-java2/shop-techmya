@@ -14,4 +14,10 @@ public class OrderDetailDTO {
     private int orderNo;
     private int productNo;
     private int productOptionNo;
+
+    public OrderDetailDTO(int detailOrderAmount, int productNo, int productOptionNo) {
+        this.detailOrderAmount = detailOrderAmount;
+        this.productNo = productNo;
+        this.productOptionNo = productOptionNo;
+    }
 }
