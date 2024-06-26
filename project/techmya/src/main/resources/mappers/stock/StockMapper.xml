@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohgiraffers.techmya.stock.model.dao.StockMapper">
+    <resultMap id="stockResultMap" type="com.ohgiraffers.techmya.stock.model.dto.outputStockDTO">
+        <id property="stockNo" column="stock_no"/>
+        <result property="stockQuantity" column="stock_quantity"/>
+        <result property="stockName" column="product_name"/>
+        <result property="stockOptions" column="product_option_name"/>
+        <result property="stockStatus" column="product_status"/>
+    </resultMap>
+
+    <select id="searchStock" resultMap="stockResultMap">
+        SELECT
+        q.stock_no stock_no,
+        q.stock_quantity stock_quantity,
+        q.product_name product_name,
+        IFNULL(c.product_option_name,'없음') product_option_name,
+        d.product_status product_status
+        FROM (
+        SELECT
+        a.product_no,
+        a.stock_quantity,
+        a.stock_no,
+        b.product_name,
+        a.product_option_no
+        from stock a
+        left JOIN product b
+        ON a.product_no = b.product_no
+        ) q
+        left JOIN product_option c
+        ON q.product_option_no = c.product_option_no
+        left JOIN product_post d
+        ON q.product_no = d.product_no;
+    </select>
+</mapper>
