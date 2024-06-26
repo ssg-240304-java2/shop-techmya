@@ -12,4 +12,9 @@ public class ShopProductController {
     public String pageShopProducts(){
         return "shop/products";
     }
+
+    @GetMapping("order")
+    public String pageOrderProduct(){
+        return "shop/orderTest";
+    }
 }
