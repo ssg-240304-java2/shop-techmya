@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohgiraffers.techmya.shop.order.model.dao.OrderMapper">
+    <select id="getProductPriceByProductNo" resultType="_int">
+        SELECT
+        PRODUCT_PRICE
+        FROM PRODUCT
+        WHERE product_no = #{ productNo }
+    </select>
+
+    <select id="getOptionPriceByOptionNo" resultType="_int">
+        SELECT
+        PRODUCT_OPTION_PRICE
+        FROM PRODUCT_OPTION
+        WHERE PRODUCT_OPTION_NO = #{ productOptionNo }
+    </select>
+
+    <insert id="registNewOrder">
+        INSERT
+        INTO `order`
+        (
+        order_price
+        , order_date
+        , user_no
+        , order_status_no
+        )
+        VALUES
+        (
+        #{ totalPrice }
+        , NOW()
+        , #{ userNo }
+        , 1
+        )
+        <selectKey keyProperty="orderNo" order="AFTER" resultType="_int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        </insert>
+
+        <select id="getLastOrderNo" >
+            SELECT
+            LAST_INSERT_ID()
+            FROM `ORDER`
+        </select>
+
+        <insert id="registNewCart">
+            INSERT
+            INTO ORDER_DETAIL
+            (DETAIL_ORDER_AMOUNT, ORDER_NO, PRODUCT_NO, PRODUCT_OPTION_NO)
+            VALUES
+            (#{ detailOrderAmount }, #{ orderNo }, #{ productNo }, #{ productOptionNo })
+        </insert>
+
+        <select id="checkProductAmount" resultType="_int">
+            SELECT
+            COUNT(PRODUCT_NO)
+            FROM
+            ORDER_DETAIL
+            WHERE ORDER_NO = #{ orderNo }
+            AND PRODUCT_NO = #{ productNo }
+        </select>
+
+        <select id="checkOptionAmount" resultType="_int">
+            SELECT
+            COUNT(PRODUCT_OPTION_NO)
+            FROM
+            ORDER_DETAIL
+            WHERE ORDER_NO = #{ orderNo }
+            AND PRODUCT_OPTION_NO = #{ productOptionNo }
+        </select>
+
+        <select id="countOptions" parameterType="_int" resultType="_int">
+            SELECT
+            COUNT(PRODUCT_NO)
+            FROM
+            PRODUCT_OPTION
+        </select>
+
+        <update id="updateCartWithOpt">
+            UPDATE
+                ORDER_DETAIL
+            SET
+                DETAIL_ORDER_AMOUNT = DETAIL_ORDER_AMOUNT + #{ detailOrderAmount }
+            WHERE
+                PRODUCT_OPTION_NO = #{ productOptionNo }
+        </update>
+
+        <update id="updateCartNoOpt">
+            UPDATE
+            ORDER_DETAIL
+            SET
+            DETAIL_ORDER_AMOUNT = DETAIL_ORDER_AMOUNT + #{ detailOrderAmount }
+            WHERE
+            PRODUCT_NO = #{ productOptionNo }
+        </update>
+
+        <update id="updateOrder">
+            UPDATE
+                `ORDER`
+            SET
+                ORDER_PRICE = ORDER_PRICE + #{ totalPrice }
+            WHERE
+                ORDER_NO = #{ orderNo }
+        </update>
+    </mapper>
