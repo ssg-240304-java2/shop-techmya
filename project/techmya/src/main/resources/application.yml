@@ -6,3 +6,5 @@ spring:
     url: jdbc:mysql://ssg-java2.iptime.org/techdb
     username: tcat
     password: 1111
+  mybatis:
+    mapper-locations: mappers/**/*.xml
