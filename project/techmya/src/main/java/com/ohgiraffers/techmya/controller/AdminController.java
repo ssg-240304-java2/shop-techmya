@@ -12,6 +12,10 @@ public class AdminController {
     public String getAdmin(){
 
         return "admin/main";
+    }
 
+    @GetMapping("stock/stockmain")
+    public String getStockMain(){
+        return "admin/stock/stockmain";
     }
 }
