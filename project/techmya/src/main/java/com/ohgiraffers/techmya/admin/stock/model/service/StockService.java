@@ -1,6 +1,6 @@
 package com.ohgiraffers.techmya.admin.stock.model.service;
 
-import com.ohgiraffers.techmya.stock.model.dto.outputStockDTO;
+import com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO;
 
 import java.util.List;
 

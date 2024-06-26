@@ -1,8 +1,8 @@
 package com.ohgiraffers.techmya.admin.stock.controller;
 
 
-import com.ohgiraffers.techmya.stock.model.dto.outputStockDTO;
-import com.ohgiraffers.techmya.stock.model.service.StockService;
+import com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO;
+import com.ohgiraffers.techmya.admin.stock.model.service.StockService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,8 +1,8 @@
 package com.ohgiraffers.techmya.admin.stock.model.service;
 
 
-import com.ohgiraffers.techmya.stock.model.dao.StockMapper;
-import com.ohgiraffers.techmya.stock.model.dto.outputStockDTO;
+import com.ohgiraffers.techmya.admin.stock.model.dao.StockMapper;
+import com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
