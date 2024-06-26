@@ -1,11 +1,11 @@
 spring:
   application:
     name: techmya
-    thymeleaf:
-      prefix: classpath:/templates/
-      suffix: .html
-      mode: HTML5
-      cache: false
+#    thymeleaf:
+#      prefix: classpath:/templates/
+#      suffix: .html
+#      mode: HTML5
+#      cache: false
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
