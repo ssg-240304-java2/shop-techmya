@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>로그인 페이지</title>
+    <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <meta name="description" content="" />
     <link rel="icon" type="image/x-icon" href="/admin/assets/img/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,6 +17,17 @@
     <link rel="stylesheet" href="/admin/assets/vendor/css/pages/page-auth.css" />
     <script src="/admin/assets/vendor/js/helpers.js"></script>
     <script src="/admin/assets/js/config.js"></script>
+    <script>
+        function validateLoginForm() {
+            var userId = document.getElementById("userId").value;
+            var userPw = document.getElementById("password").value;
+
+            if (!userId || !userPw) {
+                alert("사용자 아이디와 비밀번호를 입력해주세요.");
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container-xxl">
@@ -29,7 +41,7 @@
                     <h4 class="mb-2">Welcome to Techmya-Cat! 🐈</h4>
                     <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-                    <form id="formAuthentication" method="post" action="/authenticate" class="mb-3">
+                    <form id="formAuthentication" method="post" action="/authenticate" class="mb-3" onsubmit="validateLoginForm(event)">
                         <div class="mb-3">
                             <label for="userId" class="form-label">Username</label>
                             <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter your ID" autofocus required />
@@ -48,7 +60,12 @@
                         </div>
                     </form>
 
-                    <button class="btn btn-primary d-grid w-100" onclick="location.href='/signup'">Register Account</button>
+                    <p class="text-center">
+                        <span>New on our platform?</span>
+                        <a href="/signup">
+                            <span>Create an account</span>
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>

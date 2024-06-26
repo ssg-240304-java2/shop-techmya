@@ -4,6 +4,9 @@ import com.ohgiraffers.techmya.member.model.dao.UserMapper;
 import com.ohgiraffers.techmya.member.model.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UserService {
@@ -15,21 +18,22 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public void registerUser(UserDTO userDTO) {
-        userMapper.insert(userDTO);
+    @Transactional
+    public void insertUser(UserDTO userDTO) {
+        userMapper.insertUser(userDTO);
+        userMapper.insertPersonalInfo(userDTO.getUserName(), userDTO.getUserBirth(), userDTO.getUserPhone(), userDTO.getUserEmail(), userDTO.getUserNo());
     }
 
     public boolean isUserIdExists(String userId) {
-        return userMapper.findByUserId(userId) != null;
+        Integer count = userMapper.countByUserId(userId);
+        return count != null && count > 0;
     }
 
     public UserDTO authenticateUser(String userId, String userPw) {
-        UserDTO userDTO = userMapper.authenticateUser(userId, userPw);
-        if (userDTO != null && userDTO.getUserPw().equals(userPw)) {
-            userMapper.insertLog(userDTO.getUserNo()); // 로그인 성공 시 로그 기록
-            return userDTO;
-        } else {
-            return null;
-        }
+        return userMapper.authenticateUser(userId, userPw);
+    }
+
+    public void logUserLogin(int userNo) {
+        userMapper.insertLog(userNo, LocalDateTime.now());
     }
 }

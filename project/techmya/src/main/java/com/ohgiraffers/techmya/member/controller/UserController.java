@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 public class UserController {
 
@@ -16,65 +18,67 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String indexPage() {
-        return "redirect:/index.html"; // 정적 리소스 경로로 리다이렉트
-    }
-
-    @GetMapping("/signup")
-    public String signupPage() {
-        return "member/signup"; // member/signup.html 페이지로 이동
-    }
-
     @PostMapping("/register")
-    public String registerUser(@RequestParam String userId,
-                               @RequestParam String userPw,
-                               @RequestParam String userName,
-                               @RequestParam String userBirth,
-                               @RequestParam String userPhone,
-                               @RequestParam String userEmail) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(userId);
-        userDTO.setUserPw(userPw);
-        userDTO.setUserName(userName);
-        userDTO.setUserBirth(userBirth);
-        userDTO.setUserPhone(userPhone);
-        userDTO.setUserEmail(userEmail);
-
-        try {
-            userService.registerUser(userDTO); // 회원가입 시도
-            return "redirect:/login"; // 회원가입 성공 시 로그인 페이지로 이동
-        } catch (Exception e) {
-            return "redirect:/signup"; // 회원가입 실패 시 다시 회원가입 페이지로 이동
+    public String register(@RequestParam String userId,
+                           @RequestParam String userPw,
+                           @RequestParam String userName,
+                           @RequestParam String userBirth,
+                           @RequestParam String userPhone,
+                           @RequestParam String userEmail) {
+        if (userService.isUserIdExists(userId)) {
+            return "redirect:/signup?error=exists";
         }
+        LocalDateTime appendDate = LocalDateTime.now();
+        UserDTO userDTO = new UserDTO(userId, userPw, userName, userBirth, userPhone, userEmail, appendDate);
+        userService.insertUser(userDTO);
+        return "redirect:/login";
     }
 
     @GetMapping("/checkUserId")
-    public @ResponseBody String checkUserIdExists(@RequestParam String userId) {
+    @ResponseBody
+    public String checkUserId(@RequestParam String userId) {
         if (userService.isUserIdExists(userId)) {
-            return "exists"; // 이미 존재하는 아이디인 경우
+            return "exists";
         } else {
-            return "available"; // 사용 가능한 아이디인 경우
+            return "available";
         }
+    }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "member/signup";
     }
 
     @GetMapping("/login")
     public String loginPage() {
-        return "member/login"; // templates/member/login.html 페이지로 이동
+        return "member/login";
     }
 
+
     @PostMapping("/authenticate")
-    public @ResponseBody String authenticateUser(@RequestParam String userId, @RequestParam String userPw) {
+    public String authenticateUser(@RequestParam String userId, @RequestParam String userPw) {
+
+        //확인코드 쓰기
         UserDTO authenticatedUser = userService.authenticateUser(userId, userPw);
 
+
         if (authenticatedUser != null) {
-            if ("1".equals(authenticatedUser.getUserAuth())) {
-                return "admin"; // 관리자 페이지로 리디렉션
+            // User is authenticated successfully
+
+            // Log the user login
+            userService.logUserLogin(authenticatedUser.getUserNo());
+
+            // Check user authorization level
+            if (authenticatedUser.getUserAuth() == 1) {
+                // User is authorized as admin
+                return "/admin-main"; // Return path to admin main page
             } else {
-                return "user"; // 쇼핑몰 메인 페이지로 리디렉션
+                // User is not admin, return path to regular index.html
+                return "redirect:/";
             }
         } else {
-            return "fail"; // 로그인 실패
+            // User authentication failed, redirect to login page
+            return "redirect:/login";
         }
     }
 }
