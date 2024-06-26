@@ -73,7 +73,7 @@ public class UserController {
                 // User is authorized as admin
                 return "/admin-main"; // Return path to admin main page
             } else {
-                // User is not admin, return path to regular board.html
+                // User is not admin, return path to regular boardMain.html
                 return "redirect:/";
             }
         } else {
