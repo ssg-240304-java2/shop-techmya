@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 글수정</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h2>게시판 글수정</h2>
+    <form action="board/submitEdit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="postNo" th:value="${post.postNo}">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" class="form-control" id="title"
+                   placeholder="제목 입력(4-100)" name="title"
+                   maxlength="100" required="required">
+<!--                   pattern=".{4,100}" th:value="${post.postTitle}">-->>
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea class="form-control" rows="5" id="content"
+                      name="content" placeholder="내용 작성"></textarea>
+<!--                      th:text="${post.postContent}"></textarea>-->
+        </div>
+        <div class="form-group">
+            <label for="writer">작성자</label>
+            <input type="text" class="form-control" id="writer"
+                   placeholder="작성자(2자-10자)" name="writer">
+<!--                   th:value="${post.writer}">-->
+        </div>
+        <div class="form-group">
+            <label for="image">사진</label>
+<!--            <div>-->
+<!--                <img th:src="@{${post.imagePath}}" alt="현재 이미지" class="img-thumbnail" style="max-width: 200px;">-->
+<!--            </div>-->
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            <input type="checkbox" id="deleteImage" name="deleteImage" value="true"> 기존 이미지 삭제
+        </div>
+        <button type="submit" class="btn btn-default">수정</button>
+    </form>
+</div>
+</body>
+</html>
