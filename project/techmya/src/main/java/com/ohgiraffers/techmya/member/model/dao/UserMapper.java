@@ -20,5 +20,6 @@ public interface UserMapper {
     int countByUserId(@Param("userId") String userId);
 
     UserDTO authenticateUser(@Param("userId") String userId, @Param("userPw") String userPw);
+
     void insertLog(@Param("userNo") int userNo, @Param("logDate") LocalDateTime logDate);
 }
