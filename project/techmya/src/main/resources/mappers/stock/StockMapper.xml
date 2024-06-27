@@ -5,33 +5,61 @@
 <mapper namespace="com.ohgiraffers.techmya.admin.stock.model.dao.StockMapper">
     <resultMap id="stockResultMap" type="com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO">
         <id property="stockNo" column="stock_no"/>
+        <result property="productNo" column="product_no"/>
+        <result property="productName" column="product_name"/>
+        <result property="productOptionNo" column="product_option_no"/>
+        <result property="productOption" column="product_option_name"/>
         <result property="stockQuantity" column="stock_quantity"/>
-        <result property="stockName" column="product_name"/>
-        <result property="stockOptions" column="product_option_name"/>
-        <result property="stockStatus" column="product_status"/>
+        <result property="productStatus" column="product_status"/>
     </resultMap>
 
     <select id="searchStock" resultMap="stockResultMap">
         SELECT
-        q.stock_no stock_no,
-        q.stock_quantity stock_quantity,
-        q.product_name product_name,
-        IFNULL(c.product_option_name,'없음') product_option_name,
-        d.product_status product_status
+            q.stock_no stock_no,
+            q.product_no product_no,
+            q.product_name product_name,
+            IFNULL(c.product_option_no,'없음') product_option_no,
+            IFNULL(c.product_option_name,'없음') product_option_name,
+            q.stock_quantity stock_quantity,
+            d.product_status product_status
         FROM (
         SELECT
-        a.product_no,
-        a.stock_quantity,
-        a.stock_no,
-        b.product_name,
-        a.product_option_no
-        from stock a
-        left JOIN product b
-        ON a.product_no = b.product_no
+            a.product_no,
+            a.stock_quantity,
+            a.stock_no,
+            b.product_name,
+            a.product_option_no
+        FROM stock a
+        LEFT JOIN product b
+            ON a.product_no = b.product_no
         ) q
         left JOIN product_option c
         ON q.product_option_no = c.product_option_no
         left JOIN product_post d
-        ON q.product_no = d.product_no;
+        ON q.product_no = d.product_no
+            WHERE q.product_name like CONCAT('%', #{ searchInfo }, '%')
     </select>
+
+    <select id="searchOpt">
+        SELECT product_option_no
+        FROM product_option
+        WHERE product_option_name = #{ option }
+    </select>
+
+    <select id="checkOption" resultType="Integer">
+        SELECT
+        product_option_no
+        FROM product a
+        JOIN product_option b
+        ON a.product_no = b.product_no
+        WHERE product_option_name = #{ option }
+    </select>
+
+    <insert id="inputStock" parameterType="_int">
+        INSERT INTO stock (stock_quantity, product_no, product_option_no) VALUES ( #{amount} , #{ number }, #{ optionNo })
+    </insert>
+
+    <insert id="inputStock2">
+        INSERT INTO stock (stock_quantity, product_no) VALUES ( #{amount} , #{ num } )
+    </insert>
 </mapper>
