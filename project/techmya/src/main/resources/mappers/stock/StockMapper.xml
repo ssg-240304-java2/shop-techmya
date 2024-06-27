@@ -21,6 +21,14 @@
         <result property="inDate" column="in_date"/>
     </resultMap>
 
+    <resultMap id="OutStockResultMap" type="com.ohgiraffers.techmya.admin.stock.model.dto.OutStockDTO">
+        <id property="outNo" column="out_no"/>
+        <result property="outQuantity" column="out_quantity"/>
+        <result property="outDate" column="out_date"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="stockNo" column="stock_no"/>
+    </resultMap>
+
     <select id="searchStock" resultMap="stockResultMap">
         SELECT
             q.stock_no stock_no,
@@ -91,5 +99,13 @@
                 ON b.product_no = d.product_no
             JOIN product_option q
                 ON b.product_option_no = q.product_option_no)t
+    </select>
+
+
+    <select id="selectAll" resultMap="OutStockResultMap">
+        SELECT
+        out_no, out_quantity, DATE_FORMAT(out_date, '%Y-%m-%d') out_date, order_no, stock_no
+        FROM
+        out_warehouse
     </select>
 </mapper>
