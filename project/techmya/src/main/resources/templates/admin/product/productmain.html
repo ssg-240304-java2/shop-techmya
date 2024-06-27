@@ -5,16 +5,19 @@
         layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Stock - Manage</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>Admin - Product</title>
 </head>
+
 <body>
+
 <!-- Content wrapper -->
 <div layout:fragment="content" class="content-wrapper">
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-2">Stock Tables</h4>
+        <h4 class="fw-bold py-3 mb-2">Product Tables</h4>
+
+        <button onclick="location.href='/product/regist'">상품 등록</button>
 
         <!-- Responsive Table -->
         <div class="card">
@@ -25,12 +28,16 @@
                     <tr class="text-nowrap">
                         <th> </th>
                         <th>Number</th>
-                        <th>Date</th>
-                        <th>Username</th>
-                        <th>Order Contents</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Product Category</th>
+                    </tr>
+                    <tr th:each="product : ${ productList }">
+                        <th> </th>
+                        <td th:text="${ product.productNo}"></td>
+                        <td th:text="${ product.productName}"></td>
+                        <td th:text="${ product.productPrice}"></td>
+                        <td th:text="${ product.categoryName}"></td>
                     </tr>
                     </thead>
                 </table>
@@ -42,4 +49,5 @@
 </div>
 <!-- Content wrapper -->
 </body>
+
 </html>
