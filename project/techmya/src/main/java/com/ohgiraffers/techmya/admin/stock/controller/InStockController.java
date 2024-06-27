@@ -26,6 +26,7 @@ public class InStockController {
         List<InWHDTO> inStockList = stockService.findInstock(searchInstock);
 
         model.addAttribute("inStockList", inStockList);
+        model.addAttribute("currentPage", "stock");    // html 탭 활성화
         return "/admin/stock/inmanage";
     }
 }

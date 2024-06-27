@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
@@ -11,49 +11,167 @@
 <!-- Content wrapper -->
 
 <div layout:fragment="content" class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h3 class="fw-bold py-3 mb-2">In-Stock Manage</h3>
+
   <!-- Content -->
 
+
+    <div class="nav-align-top mb-4">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <form action="/stock/instock" method="post">
+            <button
+                    type="submit"
+                    class="nav-link active"
+                    role="tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#navs-top-home"
+                    aria-controls="navs-top-home"
+                    aria-selected="true"
+            >
+              입고
+            </button>
+          </form>
+        </li>
+        <li class="nav-item">
+          <form action="/stock/outstock" method="post">
+            <button
+                    type="submit"
+                    class="nav-link"
+                    role="tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#navs-top-profile"
+                    aria-controls="navs-top-profile"
+                    aria-selected="false"
+            >
+              출고
+            </button>
+          </form>
+        </li>
+        <li class="nav-item">
+          <form action="/stock/stockmain" method="post">
+            <button
+                    type="submit"
+                    class="nav-link"
+                    role="tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#navs-top-profile"
+                    aria-controls="navs-top-profile"
+                    aria-selected="false"
+            >
+              재고
+            </button>
+          </form>
+        </li>
+      </ul>
+    <div class="tab-content">
+
+      <div class="row">
+        <div class="col-lg-4 col-sm 12 text-lg-start text-center mr-4">
+          <form action="/stock/instocklist" method="post">
+            <div class="nav-item d-flex align-items-center">
+              <i class="bx bx-search-alt-2 btn-outline-primary fs-4 lh-0"></i>
+              <input
+                      type="text"
+                      class="form-control"
+                      name="searchInfo"
+                      id="searchInfo"
+                      placeholder="Enter Product Name..."
+                      aria-label="Enter Product Name..."
+              />
+              <button type="submit"  class="m-lg-1 btn btn-medium btn-outline-primary">Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="tab-pane fade show active" id="navs-top-in" role="tabpanel">
+
+        <!-- 첫 빈칸 -->
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+            <thead>
+            <tr class="text-nowrap">
+              <th></th>
+              <th>InHousing No</th>
+              <th>Product Name</th>
+              <th>Product Option</th>
+              <th>InHousing Quantity</th>
+              <th>InHousing Date</th>
+            </tr>
+            <tr th:each="inStock : ${ inStockList }">
+              <td></td>
+              <td th:text="${ inStock.inNo }"></td>
+              <td th:text="${ inStock.productName }"></td>
+              <td th:text="${ inStock.productOption }"></td>
+              <td th:text="${ inStock.inQuantity }"></td>
+              <td th:text="${ inStock.inDate }"></td>
+            </tr>
+            </thead>
+          </table>
+          <br>
+          <hr>
+<!--          <form action="/stock/stockinput" method="post" id="inputFrom">-->
+<!--            <lable>상품번호 : </lable><input type="text" name="number"/><br>-->
+<!--            <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>-->
+<!--            <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp수량 : </lable><input type="text" name="amount"/><button type="submit">등록</button><br>-->
+
+<!--          </form>-->
+          <script>
+          </script>
+        </div>
+      </div>
+
+
+
+
+
+      <!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+
   <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-2">InWarehousing MANAGE</h4>
-    <span style="float:left">
-    <form action="/stock/stockmain" method="post">
-      <button type="submit">재고</button>
-    </form></span>
-    <form action="/stock/outstock" method="post">
-    <button type="submit">출고</button>
-  </form>
+<!--    <h4 class="fw-bold py-3 mb-2">InWarehousing MANAGE</h4>-->
+<!--    <span style="float:left">-->
+<!--    <form action="/stock/stockmain" method="post">-->
+<!--      <button type="submit">재고</button>-->
+<!--    </form></span>-->
+<!--    <form action="/stock/outstock" method="post">-->
+<!--    <button type="submit">출고</button>-->
+<!--  </form>-->
 
     <!-- Responsive Table -->
-    <div class="card">
+<!--    <div class="card">-->
       <!--            <h5 class="card-header"></h5>-->
-      <div class="table-responsive text-nowrap">
-        <br>
-        <form action="/instock/instocklist" method="post">
-          <input type="text" name="searchInfo" id="searchInfo">
-          <button type="submit">전체 조회</button>
-        </form>
-        <table class="table">
-          <thead>
-          <tr class="text-nowrap">
-            <th></th>
-            <th>InHousing No</th>
-            <th>Product Name</th>
-            <th>Product Option</th>
-            <th>InHousing Quantity</th>
-            <th>InHousing Date</th>
-          </tr>
-          <tr th:each="inStock : ${ inStockList }">
-            <td></td>
-            <td th:text="${ inStock.inNo }"></td>
-            <td th:text="${ inStock.productName }"></td>
-            <td th:text="${ inStock.productOption }"></td>
-            <td th:text="${ inStock.inQuantity }"></td>
-            <td th:text="${ inStock.inDate }"></td>
-          </tr>
-          </thead>
-        </table>
-        <br>
-        <hr>
+<!--      <div class="table-responsive text-nowrap">-->
+<!--        <br>-->
+<!--        <form action="/instock/instocklist" method="post">-->
+<!--          <input type="text" name="searchInfo" id="searchInfo">-->
+<!--          <button type="submit">전체 조회</button>-->
+<!--        </form>-->
+<!--        <table class="table">-->
+<!--          <thead>-->
+<!--          <tr class="text-nowrap">-->
+<!--            <th></th>-->
+<!--            <th>InHousing No</th>-->
+<!--            <th>Product Name</th>-->
+<!--            <th>Product Option</th>-->
+<!--            <th>InHousing Quantity</th>-->
+<!--            <th>InHousing Date</th>-->
+<!--          </tr>-->
+<!--          <tr th:each="inStock : ${ inStockList }">-->
+<!--            <td></td>-->
+<!--            <td th:text="${ inStock.inNo }"></td>-->
+<!--            <td th:text="${ inStock.productName }"></td>-->
+<!--            <td th:text="${ inStock.productOption }"></td>-->
+<!--            <td th:text="${ inStock.inQuantity }"></td>-->
+<!--            <td th:text="${ inStock.inDate }"></td>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--        </table>-->
+<!--        <br>-->
+<!--        <hr>-->
+
 <!--        <form action="/stock/stockinput" method="post" id="inputFrom">-->
 <!--          <lable>상품번호 : </lable><input type="text" name="number"/><br>-->
 <!--          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>-->
@@ -67,40 +185,6 @@
 
     <div class="content-backdrop fade"></div>
   </div>
-  <!-- Footer -->
-  <footer class="content-footer footer bg-footer-theme" style="position:absolute; bottom:0px;">
-    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-      <div class="mb-2 mb-md-0">
-        ©
-        <script>
-          document.write(new Date().getFullYear());
-        </script>
-        , made with ❤️ by
-        <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-      </div>
-      <div>
-        <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-        <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
-        <a
-                href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                target="_blank"
-                class="footer-link me-4"
-        >Documentation</a
-        >
-
-        <a
-                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                target="_blank"
-                class="footer-link me-4"
-        >Support</a
-        >
-      </div>
-    </div>
-  </footer>
-  <!-- / Footer -->
-
-  <div class="content-backdrop fade"></div>
 </div>
 <!-- Content wrapper -->
 </body>

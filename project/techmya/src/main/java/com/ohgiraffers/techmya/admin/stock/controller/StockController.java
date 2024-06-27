@@ -26,19 +26,30 @@ public class StockController {
 
 
     @PostMapping("/stockmain")
-    public String stockmain() {
+    public String stockmain(Model model) {
+
+        model.addAttribute("currentPage", "stock");
+
         return "/admin/stock/stockmain";
     }
-    @GetMapping("/stockmain")
-    public String stockmain2() {
-        return "/admin/stock/stockmain";
-    }
+//    @GetMapping("/stockmain")
+//    public String stockmain2() {
+//        return "/admin/stock/stockmain";
+//    }
 
     @GetMapping("/stocklist")
     public String stocklist(Model model, @RequestParam(required = false) String searchInfo) {
         List<outputStockDTO> outStockList = stockService.searchStock(searchInfo);
 
         model.addAttribute("stockList", outStockList);
+        model.addAttribute("currentPage", "stock");
+
+        return "/admin/stock/stockmain";
+    }
+
+    @GetMapping("/stockmain")
+    public String stockMain(Model model) {
+        model.addAttribute("currentPage", "stock");
         return "/admin/stock/stockmain";
     }
 
@@ -54,13 +65,16 @@ public class StockController {
             stockService.inputStock2(num, amount);
         }
         model.addAttribute("inputResult", "성공!!!!");
-
+        model.addAttribute("currentTab", "stockmain");    // html 탭 활성화
+        model.addAttribute("currentPage", "stock");
 
         return "/admin/stock/stockmain";
     }
 
     @PostMapping("/instock")
-    public String inmanager() {
+    public String inmanager(Model model) {
+
+        model.addAttribute("currentPage", "stock");
         return "/admin/stock/inmanage";
     }
 
@@ -73,12 +87,10 @@ public class StockController {
 
 
 
-
-
-
-
     @PostMapping("outstock")
-    public String outmanager() {
+    public String outmanager(Model model) {
+
+        model.addAttribute("currentPage", "stock");
         return "/admin/stock/outmanage";
     }
 }

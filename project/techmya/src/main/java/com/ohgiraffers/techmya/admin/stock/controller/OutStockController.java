@@ -26,6 +26,7 @@ public class OutStockController {
         List<OutStockDTO> OutStockList = stockService.selectAll();
 
         model.addAttribute("OutStockList", OutStockList);
+        model.addAttribute("currentTab", "stockmain");    // html 탭 활성화
         return "admin/stock/outmanage";
     }
 }

@@ -39,6 +39,7 @@ public class ProductController {
 
         // 조회된 목록을 productList라는 이름으로 main.html에 리스트 객체로 전달
         model.addAttribute("productList", productList);
+        model.addAttribute("currentPage", "product");   // 네비 메뉴 활성화용으로 추가
 
         return "/admin/product/productmain";
     }
@@ -50,6 +51,7 @@ public class ProductController {
         log.info("[ProductController] getAllParentCategories parentCategories = {}", parentCategories);
 
         model.addAttribute("parentCategories", parentCategories);
+        model.addAttribute("currentPage", "product");   // 네비 메뉴 활성화용으로 추가
 
         return "/admin/product/regist";
     }
@@ -88,6 +90,8 @@ public class ProductController {
         log.info("[ProductController] getAllSellPost = {}", sellPostList);
 
         model.addAttribute("sellPostList", sellPostList);
+        model.addAttribute("currentPage", "product");   // 네비 메뉴 활성화용으로 추가
+
 
         return "/admin/product/post";
     }
@@ -107,6 +111,7 @@ public class ProductController {
         log.info("[ProductController] getAllParentCategories parentCategories = {}", parentCategories);
 
         model.addAttribute("parentCategories", parentCategories);
+        model.addAttribute("currentPage", "product");   // 네비 메뉴 활성화용으로 추가
 
         return "/admin/product/postregist";
     }
