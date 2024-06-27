@@ -1,6 +1,6 @@
 package com.ohgiraffers.techmya.admin.product.model.service;
 
-import com.ohgiraffers.techmya.admin.product.model.dao.PostMapper;
+import com.ohgiraffers.techmya.admin.product.model.dao.ProductPostMapper;
 import com.ohgiraffers.techmya.admin.product.model.dto.ProductAndProductPostDTO;
 import com.ohgiraffers.techmya.admin.product.model.dto.ProductDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +12,9 @@ import java.util.List;
 @Slf4j
 public class ProductPostService {
 
-    private final PostMapper postMapper;
+    private final ProductPostMapper postMapper;
 
-    public ProductPostService(PostMapper postMapper) {
+    public ProductPostService(ProductPostMapper postMapper) {
         this.postMapper = postMapper;
     }
 
