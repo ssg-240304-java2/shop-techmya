@@ -28,20 +28,20 @@ public class ShopProductController {
 
     @GetMapping("order")
     public String pageOrderProduct(){
-        return "shop/orderProduct";
+        return "orderproduct";
     }
 
     @GetMapping("cart")
-    public String  pageOrderCart(){ return "shop/orderCart"; }
+    public String  pageOrderCart(){ return "ordercart"; }
 
     @GetMapping("/orderProduct")
     public String orderProduct(Model model) {
-        return "shop/orderProduct";
+        return "orderproduct";
     }
 
     @GetMapping("/orderCart")
     public String orderCart(Model model) {
-        return "shop/orderCart";
+        return "ordercart";
     }
 
 
@@ -75,7 +75,7 @@ public class ShopProductController {
         } else {
 
             rttr.addFlashAttribute("message", "장바구니 저장에 실패했습니다.");
-            return "shop/orderProduct";
+            return "orderproduct";
         }
     }
 
