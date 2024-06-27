@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohgiraffers.techmya.admin.product.model.dao.PostMapper">
+    <!-- 1. 판매 글 조회 -->
+    <resultMap id="productAndPorductPostResultMap" type="com.ohgiraffers.techmya.admin.product.model.dto.ProductAndProductPostDTO">
+        <id property="productPostNo" column="product_post_no"/>
+        <result property="productDesc" column="product_desc"/>
+        <result property="productStatus" column="product_status"/>
+        <result property="shippingPeriod" column="shipping_period"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="enrolledDate" column="enrolled_date"/>
+        <result property="modifiedDate" column="modified_date"/>
+
+        <result property="productNo" column="product_no"/>
+        <result property="productName" column="product_name"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="categoryCode" column="category_code"/>
+        <result property="categoryName" column="category_Name"/>
+    </resultMap>
+
+    <!-- 1-1. 판매 글 전체 조회 -->
+    <select id="getAllSellPost" resultMap="productAndPorductPostResultMap">
+        SELECT
+            product_post_no,
+            product_desc,
+            product_status,
+            shipping_period,
+            view_count,
+            enrolled_date,
+            modified_date,
+            P.product_no,
+            P.product_name,
+            P.product_price,
+            P.category_code,
+            C.category_name
+        FROM
+            product_post
+                LEFT JOIN product AS P
+                    USING(product_no)
+                LEFT JOIN product_category AS C
+                    ON P.category_code = C.category_code
+        ORDER BY
+            product_post_no
+    </select>
+
+    <!-- 2. 카테고리 선택된 상품 조회 -->
+    <resultMap id="productResultMap" type="com.ohgiraffers.techmya.admin.product.model.dto.ProductDTO">
+        <id property="productNo" column="product_no"/>
+        <result property="productName" column="product_name"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="categoryCode" column="category_code"/>
+        <result property="categoryName" column="category_Name"/>
+
+    </resultMap>
+
+    <select id="getAllProduct" resultMap="productResultMap">
+        SELECT
+            product_no,
+            product_name
+        FROM
+            product
+        WHERE
+            category_code = #{ subCategoryNo }
+        ORDER BY
+            product_name
+    </select>
+
+    <!-- 3. 신규 판매 글 등록 -->
+    <insert id="registSellPost">
+        INSERT INTO product_post
+            (
+                product_no,
+                product_desc,
+                product_status,
+                shipping_period
+            )
+        VALUES
+            (
+                #{ productNo },
+                #{ productDesc },
+                #{ productStatus },
+                #{ shippingPeriod }
+            )
+    </insert>
+
+</mapper>
