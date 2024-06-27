@@ -1,5 +1,6 @@
 package com.ohgiraffers.techmya.admin.stock.model.service;
 
+import com.ohgiraffers.techmya.admin.stock.model.dto.OutStockDTO;
 import com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO;
 import com.ohgiraffers.techmya.admin.stock.model.dto.InWHDTO;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,4 +20,6 @@ public interface StockService {
     void inputStock2(int num, int amount);
 
     List<InWHDTO> findInstock(String searchInstock);
+
+    List<OutStockDTO> selectAll();
 }

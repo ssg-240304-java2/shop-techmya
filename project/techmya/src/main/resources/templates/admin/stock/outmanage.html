@@ -30,44 +30,40 @@
       <!--            <h5 class="card-header"></h5>-->
       <div class="table-responsive text-nowrap">
         <br>
-        <form action="/stock/stocklist" method="get">
+        <form action="/outstock/list" method="post">
           <input type="text" name="searchInfo" id="searchInfo">
-          <button type="submit">상품명 검색</button>
+          <button type="submit">전체조회</button>
         </form>
         <table class="table">
           <thead>
           <tr class="text-nowrap">
             <th></th>
+            <th>Out No</th>
+            <th>Out Quantity</th>
+            <th>Out Date</th>
+            <th>Order No</th>
             <th>Stock No</th>
-            <th>Product No</th>
-            <th>Product Name</th>
-            <th>Product OptionNo</th>
-            <th>Product Option</th>
-            <th>Product Quantity</th>
-            <th>Product Status</th>
           </tr>
-          <tr th:each="stock : ${ stockList }">
+          <tr th:each="stock : ${ OutStockList }">
             <td></td>
+            <td th:text="${ stock.outNo }"></td>
+            <td th:text="${ stock.outQuantity }"></td>
+            <td th:text="${ stock.outDate }"></td>
+            <td th:text="${ stock.orderNo }"></td>
             <td th:text="${ stock.stockNo }"></td>
-            <td th:text="${ stock.productNo }"></td>
-            <td th:text="${ stock.productName }"></td>
-            <td th:text="${ stock.productOptionNo }"></td>
-            <td th:text="${ stock.productOption }"></td>
-            <td th:text="${ stock.stockQuantity }"></td>
-            <td th:text="${ stock.productStatus }"></td>
           </tr>
           </thead>
         </table>
         <br>
         <hr>
-        <form action="/stock/stockinput" method="post" id="inputFrom">
-          <lable>상품번호 : </lable><input type="text" name="number"/><br>
-          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>
-          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp수량 : </lable><input type="text" name="amount"/><br>
-          <button type="submit">검색</button>
-        </form>
-        <script>
-        </script>
+<!--        <form action="/stock/stockinput" method="post" id="inputFrom">-->
+<!--          <lable>상품번호 : </lable><input type="text" name="number"/><br>-->
+<!--          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>-->
+<!--          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp수량 : </lable><input type="text" name="amount"/><br>-->
+<!--          <button type="submit">검색</button>-->
+<!--        </form>-->
+<!--        <script>-->
+<!--        </script>-->
       </div>
     </div>
 
