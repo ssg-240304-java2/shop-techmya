@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohgiraffers.techmya.admin.order.model.dao.OrderListMapper">
+
+    <resultMap id="OrderListResultMap" type="com.ohgiraffers.techmya.admin.order.model.dto.OrderDTO">
+        <id property="orderNo" column="ORDER_NO"/>
+        <result property="orderPrice" column="ORDER_PRICE"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="orderStatus" column="ORDER_STATUS_NAME"/>
+    </resultMap>
+
+    <select id="selectTotalCount" resultType="_int">
+        SELECT
+        COUNT(*)
+        FROM `order`
+    </select>
+
+<!--    <select id="getOrderList" resultMap="OrderListResultMap">-->
+<!--        SELECT-->
+<!--        A.ORDER_NO-->
+<!--        , A.ORDER_PRICE-->
+<!--        , A.ORDER_DATE-->
+<!--        , C.USER_ID-->
+<!--        , B.ORDER_STATUS_NAME-->
+<!--        FROM `order` A JOIN order_status B on (A.order_status_no = B.order_status_no)-->
+<!--        JOIN user_info C on (A.user_no = C.user_no)-->
+<!--        ORDER BY A.ORDER_DATE DESC-->
+<!--    </select>-->
+
+    <select id="findAllMenu" resultMap="OrderListResultMap">
+        SELECT
+        A.ORDER_NO
+        , A.ORDER_PRICE
+        , A.ORDER_DATE
+        , C.USER_ID
+        , B.ORDER_STATUS_NAME
+        FROM `order` A JOIN order_status B on (A.order_status_no = B.order_status_no)
+        JOIN user_info C on (A.user_no = C.user_no)
+        ORDER BY A.ORDER_DATE DESC
+        LIMIT #{startRow},#{limit}
+    </select>
+</mapper>

@@ -1,5 +1,6 @@
 package com.ohgiraffers.techmya.shop.order.controller;
 
+import com.ohgiraffers.techmya.admin.order.model.dto.OrderDTO;
 import com.ohgiraffers.techmya.shop.order.model.dto.OrderCartDTO;
 import com.ohgiraffers.techmya.shop.order.model.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/shop")
@@ -21,28 +24,24 @@ public class ShopProductController {
 
     private int cartNo = 0;
 
-    @GetMapping("products")
+    @GetMapping("/products")
     public String pageShopProducts(){
         return "shop/products";
     }
 
-    @GetMapping("order")
+    @GetMapping("/order")
     public String pageOrderProduct(){
-        return "orderproduct";
+        return "shop/orderproduct";
     }
 
-    @GetMapping("cart")
-    public String  pageOrderCart(){ return "ordercart"; }
+    @GetMapping("/ordercart")
+    public String  pageOrderCart(Model model){
 
-    @GetMapping("/orderProduct")
-    public String orderProduct(Model model) {
-        return "orderproduct";
-    }
+        List<OrderDTO> productList = orderService.findAllOrderProduct();
 
-    @GetMapping("/orderCart")
-    public String orderCart(Model model) {
-        return "ordercart";
-    }
+        model.addAttribute("productlist", productList);
+
+        return "shop/ordercart"; }
 
 
 
@@ -70,12 +69,12 @@ public class ShopProductController {
                 orderService.updateCart(product);
                 rttr.addFlashAttribute("message", "장바구니에 추가되었습니다!");
             }
-            return "redirect:/shop/orderCart";
+            return "redirect:/shop/ordercart";
 
         } else {
 
             rttr.addFlashAttribute("message", "장바구니 저장에 실패했습니다.");
-            return "orderproduct";
+            return "redirect:/shop/orderproduct";
         }
     }
 

@@ -1,17 +1,20 @@
 package com.ohgiraffers.techmya.admin.stock.model.dto;
 
+
 import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class outputStockDTO {
 
     private int stockNo;
+    private int productNo;
+    private String productName;
+    private String productOption;
+    private String productOptionNo;
     private int stockQuantity;
-    private String stockName;
-    private String stockOptions;
-    private String stockStatus;
+    private String productStatus;
 }
