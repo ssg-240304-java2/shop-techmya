@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/order")
 public class OrderController {
 
-    @GetMapping("orderlist")
+    @GetMapping("ordermain")
     public String pageOrderList() {
-        return "admin/order/orderlist";
+        return "admin/order/ordermain";
     }
 }
