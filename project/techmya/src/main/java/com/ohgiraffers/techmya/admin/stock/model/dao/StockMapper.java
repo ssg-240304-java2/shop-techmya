@@ -1,6 +1,7 @@
 package com.ohgiraffers.techmya.admin.stock.model.dao;
 
 import com.ohgiraffers.techmya.admin.stock.model.dto.InWHDTO;
+import com.ohgiraffers.techmya.admin.stock.model.dto.OutStockDTO;
 import com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,6 @@ public interface StockMapper {
     void inputStock2(int num, int amount);
 
     List<InWHDTO> findInstock(String searchInstock);
+
+    List<OutStockDTO> selectAll();
 }
