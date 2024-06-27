@@ -24,6 +24,9 @@ public class ShopProductController {
 
     private int cartNo = 0;
 
+    @GetMapping("/detail")
+    public String pageProductDetail() { return "shop/productdetail";}
+
     @GetMapping("/products")
     public String pageShopProducts(){
         return "shop/products";
