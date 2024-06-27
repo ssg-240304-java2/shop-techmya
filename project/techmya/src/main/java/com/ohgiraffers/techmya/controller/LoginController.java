@@ -10,6 +10,7 @@ public class LoginController {
 
     @GetMapping("main")
     public String getMain(){
+
         return "login/main";
     }
 
