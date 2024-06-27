@@ -47,4 +47,21 @@
         INSERT INTO log_info (user_no, log_date)
         VALUES (#{userNo}, #{logDate})
     </insert>
+
+    <select id="getAllUsers" resultType="com.ohgiraffers.techmya.member.model.dto.UserDTO">
+        SELECT
+            u.user_id AS userId,
+            u.user_password AS userPw,
+            u.authority AS userAuth,
+            p.name AS userName,
+            p.birth AS userBirth,
+            p.phone AS userPhone,
+            p.email AS userEmail
+        FROM
+            user_info u
+                JOIN
+            personal_info p
+            ON
+                u.user_no = p.user_no
+    </select>
 </mapper>
