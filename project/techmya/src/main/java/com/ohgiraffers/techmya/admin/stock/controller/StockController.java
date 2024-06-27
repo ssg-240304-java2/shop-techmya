@@ -6,6 +6,7 @@ import com.ohgiraffers.techmya.admin.stock.model.service.StockService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,17 +32,14 @@ public class StockController {
         return "/admin/stock/stockmanage";
     }
 
-    @GetMapping("/stocklist")
+    @PostMapping("/stocklist")
     public String stocklist(Model model, @RequestParam(required = false) String searchInfo) {
         List<outputStockDTO> outStockList = stockService.searchStock(searchInfo);
-
         for (outputStockDTO stock : outStockList) {
             System.out.println(stock);
         }
-
         model.addAttribute("stockList", outStockList);
-
-        return "/admin/stock/stockmanage";
+        return "/admin/stock/stockmain";
     }
 
     @GetMapping("/inmanage")
