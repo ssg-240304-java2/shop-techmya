@@ -1,63 +1,84 @@
 <!DOCTYPE html>
 <html
-        lang="en"
-        xmlns:th="http://www.thymeleaf.org">
-<!--        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">-->
-<!--        layout:decorate="~{common/layouts/default}">-->
+        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
     <meta charset="UTF-8">
-    <title>신규 상품 등록</title>
+    <title>Admin - Product Regist</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 </head>
+
 <body>
-    <h1>⭐⭐⭐⭐신규 상품 등록⭐⭐⭐⭐</h1>
-    <form action="/product/regist" method="post">
-        <label>상품 이름 : </label><input type="text" name="productName"><br>
-        <label>상품 가격 : </label><input type="text" name="productPrice"><br>
-        <label for="parentCategory">상품 카테고리</label>
-        <select id="parentCategory" name="parentCategory">
-            <option value="">대분류 선택</option>
-            <option th:each="category : ${ parentCategories }"
-                    th:value="${ category.categoryCode }"
-                    th:text="${ category.categoryName }"></option>
-        </select>
-        <br>
-        <label for="subCategory">상품 카테고리</label>
-        <select id="subCategory" name="subCategory">
-            <option value="">소분류 선택</option>
-        </select>
-        <br>
-        <button type="submit">상품 등록</button>
-    </form>
 
-    <script>
-        $(document).ready(function() {
-            $('#parentCategory').change(function() {
-                let parentId = $(this).val();
+<!-- Content wrapper -->
+<div layout:fragment="content" class="content-wrapper">
+    <!-- Content -->
 
-                if (parentId) {
-                    $.ajax({
-                        url: '/product/regist/' + parentId + '/subcategories',
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (data) {
-                            let subCategorySelect = $('#subCategory');
-                            subCategorySelect.empty();
-                            subCategorySelect.append('<option value="">소분류 선택</option>');
-                            $.each(data, function (key, value) {
-                                subCategorySelect.append('<option value="' + value.categoryCode + '">' + value.categoryName + '</option>');
-                            });
-                        },
-                        error: function (error) {
-                            alert("Error : ", error);
-                        }
-                    });
-                } else {
-                    $('subCategory').empty();
-                    $('subCategory').append('<option value="">소분류 선택</option>');
-                }
-            })
-        })
-    </script>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-2">Product Post Regist</h4>
+
+        <!-- Responsive Table -->
+        <div class="card">
+            <!--            <h5 class="card-header"></h5>-->
+            <div class="table-responsive text-nowrap">
+                <h1>⭐⭐⭐⭐신규 상품 등록⭐⭐⭐⭐</h1>
+                <form action="/product/regist" method="post">
+                    <label>상품 이름 : </label><input type="text" name="productName"><br>
+                    <label>상품 가격 : </label><input type="text" name="productPrice"><br>
+                    <label for="parentCategory">상품 카테고리</label>
+                    <select id="parentCategory" name="parentCategory">
+                        <option value="">대분류 선택</option>
+                        <option th:each="category : ${ parentCategories }"
+                                th:value="${ category.categoryCode }"
+                                th:text="${ category.categoryName }"></option>
+                    </select>
+                    <br>
+                    <label for="subCategory">상품 카테고리</label>
+                    <select id="subCategory" name="subCategory">
+                        <option value="">소분류 선택</option>
+                    </select>
+                    <br>
+                    <button type="submit">상품 등록</button>
+                </form>
+
+                <script>
+                    $(document).ready(function() {
+                        $('#parentCategory').change(function() {
+                            let parentId = $(this).val();
+
+                            if (parentId) {
+                                $.ajax({
+                                    url: '/product/regist/' + parentId + '/subcategories',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        let subCategorySelect = $('#subCategory');
+                                        subCategorySelect.empty();
+                                        subCategorySelect.append('<option value="">소분류 선택</option>');
+                                        $.each(data, function (key, value) {
+                                            subCategorySelect.append('<option value="' + value.categoryCode + '">' + value.categoryName + '</option>');
+                                        });
+                                    },
+                                    error: function (error) {
+                                        alert("Error : ", error);
+                                    }
+                                });
+                            } else {
+                                $('subCategory').empty();
+                                $('subCategory').append('<option value="">소분류 선택</option>');
+                            }
+                        })
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
 </body>
+
 </html>

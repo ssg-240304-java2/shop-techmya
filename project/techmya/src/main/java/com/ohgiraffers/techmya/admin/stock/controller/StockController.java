@@ -23,14 +23,15 @@ public class StockController {
         this.stockService = stockService;
     }
 
-    @GetMapping("/stockmain")
+
+
+    @PostMapping("/stockmain")
     public String stockmain() {
         return "/admin/stock/stockmain";
     }
-
-    @GetMapping("/stockmanage")
-    public String stockmanager() {
-        return "/admin/stock/stockmanage";
+    @GetMapping("/stockmain")
+    public String stockmain2() {
+        return "/admin/stock/stockmain";
     }
 
     @GetMapping("/stocklist")
@@ -50,7 +51,6 @@ public class StockController {
         if (optionNo != 0) {
             stockService.inputStock(num, stockService.searchOpt(option), amount);
         } else {
-            optionNo = 0;
             stockService.inputStock2(num, amount);
         }
         model.addAttribute("inputResult", "성공!!!!");
@@ -59,16 +59,16 @@ public class StockController {
         return "/admin/stock/stockmain";
     }
 
-    @GetMapping("/instock")
+    @PostMapping("/instock")
     public String inmanager() {
         return "/admin/stock/inmanage";
     }
 
-//    @PostMapping("/instocklist")
-//    public String instocklist() {
-//
-//
-//    }
+
+    @PostMapping("/stockmain2")
+    public String inmanager2() {
+        return "/admin/stock/stockmain";
+    }
 
 
 
@@ -77,7 +77,7 @@ public class StockController {
 
 
 
-    @GetMapping("/outmanage")
+    @PostMapping("outstock")
     public String outmanager() {
         return "/admin/stock/outmanage";
     }

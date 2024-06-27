@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin - Product Post</title>
 </head>
+
 <body>
 
+<!-- Content wrapper -->
+<div layout:fragment="content" class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-2">Product Post Tables</h4>
+
+        <button onclick="location.href='/product/postregist'">판매글 등록</button>
+
+        <!-- Responsive Table -->
+        <div class="card">
+            <!--            <h5 class="card-header"></h5>-->
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr class="text-nowrap">
+                        <th> </th>
+                        <th>Number</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Product Category</th>
+                        <th>Product Status</th>
+                        <th>Enrolled Date</th>
+                    </tr>
+                    <tr th:each="post : ${ sellPostList }">
+                        <th> </th>
+                        <td th:text="${ post.productPostNo}"></td>
+                        <td th:text="${ post.productName}"></td>
+                        <td th:text="${ post.productPrice}"></td>
+                        <td th:text="${ post.categoryName}"></td>
+                        <td th:text="${ post.productStatus}"></td>
+                        <td th:text="${ post.enrolledDate}"></td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
 </body>
+
 </html>
