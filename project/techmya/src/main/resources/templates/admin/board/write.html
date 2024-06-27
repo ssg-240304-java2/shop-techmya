@@ -1,40 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
     <meta charset="UTF-8">
-    <title>게시판 글쓰기</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>게시글 작성</title>
 </head>
 <body>
-<div class="container">
-    <h2>게시판 글쓰기</h2>
-    <form action="board/write" method="post">
-        <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" class="form-control" id="title"
-                   placeholder="제목 입력(4-100)" name="title"
-                   maxlength="100" required="required"
-                   pattern=".{4,100}">
-        </div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea class="form-control" rows="5" id="content"
-                      name="content" placeholder="내용 작성"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="writer">작성자</label>
-            <input type="text" class="form-control" id="writer"
-                   placeholder="작성자(2자-10자)" name="writer">
-        </div>
-        <div class="form-group">
-            <label for="image">사진</label>
-            <input type="file" class="form-control" id="image" name="image" accept="image/*">
-        </div>
-        <button type="submit" class="btn btn-default">등록</button>
-    </form>
+<!-- Content wrapper -->
+<div layout:fragment="content" class="content-wrapper">
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-2">게시글 작성</h4>
+        <form th:action="@{/board/submitWrite}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="isPublic">공개 여부</label>
+                <input type="checkbox" id="isPublic" name="isPublic">
+            </div>
+            <div class="form-group">
+                <label for="userNo">작성자 번호</label>
+                <input type="number" class="form-control" id="userNo" name="userNo" required>
+            </div>
+            <div class="form-group">
+                <label for="boardNo">게시판 번호</label>
+                <input type="number" class="form-control" id="boardNo" name="boardNo" required>
+            </div>
+            <div class="form-group">
+                <label for="image">이미지</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div>
+            <button type="submit" class="btn btn-primary">작성</button>
+        </form>
+    </div>
+    <div class="content-backdrop fade"></div>
 </div>
+<!-- Content wrapper -->
 </body>
 </html>
