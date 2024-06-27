@@ -1,56 +1,191 @@
 package com.ohgiraffers.techmya.board.controller;
 
 import com.ohgiraffers.techmya.board.model.dto.PostDTO;
+import com.ohgiraffers.techmya.board.model.dto.PostImageDTO;
+import com.ohgiraffers.techmya.board.model.dto.ReplyDTO;
+import com.ohgiraffers.techmya.board.model.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 public class PostController {
 
-    @GetMapping("boardmain")
-    public String pagePostList() {
+    private final PostService postService;
+    private final String uploadDir = "uploads";
+
+    @Autowired
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @GetMapping("/boardmain")
+    public String list(@RequestParam(value = "boardNo", required = false) Integer boardNo, Model model) {
+        List<PostDTO> posts;
+        String boardTitle;
+
+        if (boardNo != null) {
+            posts = postService.getPostsByBoardType(boardNo);
+            boardTitle = boardNo == 1 ? "공지사항 및 문의" : "자주 묻는 질문";
+        } else {
+            posts = postService.getAllPosts();
+            boardTitle = "모든 게시글";
+        }
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("boardTitle", boardTitle);
         return "admin/board/boardmain";
     }
-    @GetMapping("write")
-    public String write() {
+
+    @GetMapping("/view/{postNo}")
+    public String view(@PathVariable("postNo") int postNo, Model model) {
+        PostDTO post = postService.getPost(postNo);
+        List<PostImageDTO> postImages = postService.getPostImagesByPostId(postNo);
+        List<ReplyDTO> replies = postService.getRepliesByPostId(postNo);
+        model.addAttribute("post", post);
+        model.addAttribute("postImages", postImages);
+        model.addAttribute("replies", replies);
+        return "admin/board/view";
+    }
+
+    @GetMapping("/write")
+    public String writeForm(Model model) {
+        model.addAttribute("post", new PostDTO());
         return "admin/board/write";
     }
 
-    @PostMapping("submitWrite")
+    @PostMapping("/submitWrite")
     public String submitWrite(@RequestParam("title") String title,
                               @RequestParam("content") String content,
-                              @RequestParam("writer") String writer,
+                              @RequestParam("isPublic") Boolean isPublic,
+                              @RequestParam("userNo") Integer userNo,
+                              @RequestParam("boardNo") Integer boardNo,
                               @RequestParam("image") MultipartFile image) {
-        // 글쓰기 로직 구현 (데이터베이스에 저장 등)
-        // 예: postService.savePost(new Post(title, content, writer, image));
-        return "redirect:admin/board/boardmain"; // 글 작성 후 리다이렉트할 경로 설정
+        PostDTO post = new PostDTO();
+        post.setPostTitle(title);
+        post.setPostContent(content);
+        post.setIsPublic(isPublic);
+        post.setUserNo(userNo);
+        post.setBoardNo(boardNo);
+        post.setCreatedDate(new Date());
+        postService.insertPost(post);
+
+        if (!image.isEmpty()) {
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(fileName);
+
+            try {
+                Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
+            }
+
+            PostImageDTO postImage = new PostImageDTO();
+            postImage.setPostImageOrgFileName(fileName);
+            postImage.setPostImageStoredFileName(fileName);
+            postImage.setCreatedDate(new Date());
+            postImage.setDeleted(false);
+            postImage.setPostNo(post.getPostNo());
+            postService.insertPostImage(postImage);
+        }
+
+        return "redirect:/board/boardmain?boardNo=" + boardNo; // 글 작성 후 리다이렉트할 경로 설정
     }
 
-    @GetMapping("reply")
-    public String reply(@RequestParam("postNo") int postNo, Model model) {
-        model.addAttribute("postNo", postNo);
-        return "admin/board/reply"; // reply.html로 이동
+    @GetMapping("/edit/{postNo}")
+    public String editForm(@PathVariable("postNo") int postNo, Model model) {
+        PostDTO post = postService.getPost(postNo);
+        List<PostImageDTO> postImages = postService.getPostImagesByPostId(postNo);
+        model.addAttribute("post", post);
+        model.addAttribute("postImages", postImages);
+        return "admin/board/edit";
     }
 
-    @GetMapping("edit")
-    public String edit(@RequestParam("postNo") int postNo, Model model) {
-        // 게시글 정보를 가져와서 모델에 추가
-        //PostDTO post = postService.getPost(postNo); // 여기서 postService는 게시글 정보를 가져오는 서비스입니다.
-        //model.addAttribute("post", post);
-        return "adminboard/edit"; // edit.html로 이동
+    @PostMapping("/submitEdit")
+    public String editPost(@RequestParam("postNo") int postNo,
+                           @RequestParam("title") String title,
+                           @RequestParam("content") String content,
+                           @RequestParam("isPublic") Boolean isPublic,
+                           @RequestParam("userNo") Integer userNo,
+                           @RequestParam("boardNo") Integer boardNo,
+                           @RequestParam(value = "image", required = false) MultipartFile image) {
+        PostDTO post = postService.getPost(postNo);
+        post.setPostTitle(title);
+        post.setPostContent(content);
+        post.setIsPublic(isPublic);
+        post.setUserNo(userNo);
+        post.setBoardNo(boardNo);
+        postService.updatePost(post);
+
+        if (image != null && !image.isEmpty()) {
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(fileName);
+
+            try {
+                Files.copy(image.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
+            }
+
+            PostImageDTO postImage = new PostImageDTO();
+            postImage.setPostImageOrgFileName(fileName);
+            postImage.setPostImageStoredFileName(fileName);
+            postImage.setCreatedDate(new Date());
+            postImage.setDeleted(false);
+            postImage.setPostNo(post.getPostNo());
+            postService.insertPostImage(postImage);
+        }
+
+        return "redirect:/board/view/" + postNo; // 수정 후 리다이렉트할 경로 설정
     }
 
-    @PostMapping("submitReply")
+    @GetMapping("/delete/{postNo}")
+    public String delete(@PathVariable("postNo") int postNo, @RequestParam("boardNo") int boardNo) {
+        postService.deletePost(postNo);
+        return "redirect:/board/boardmain?boardNo=" + boardNo; // 삭제 후 리다이렉트할 경로 설정
+    }
+
+    @PostMapping("/submitReply")
     public String submitReply(@RequestParam("postNo") int postNo,
                               @RequestParam("responseContent") String responseContent,
-                              @RequestParam("userNo") int userNo,
-                              @RequestParam("isPublic") boolean isPublic) {
-        return "redirect:admin/board/boardmain"; // 답글 작성 후 리다이렉트할 경로 설정
+                              @RequestParam("userNo") int userNo) {
+        ReplyDTO reply = new ReplyDTO();
+        reply.setPostNo(postNo);
+        reply.setResponseContent(responseContent);
+        reply.setUserNo(userNo);
+        reply.setCreatedDate(new Date());
+        reply.setPublic(true); // Assuming the reply is public by default
+        postService.insertReply(reply);
+        return "redirect:/board/view/" + postNo; // Redirect back to the post view
+    }
+
+    @GetMapping("/deleteReply")
+    public String deleteReply(@RequestParam("replyNo") int replyNo,
+                              @RequestParam("postNo") int postNo) {
+        postService.deleteReply(replyNo);
+        return "redirect:/board/view/" + postNo; // Redirect back to the post view
+    }
+
+    @PostMapping("/editReply")
+    public String editReply(@RequestParam("replyNo") int replyNo,
+                            @RequestParam("postNo") int postNo,
+                            @RequestParam("responseContent") String responseContent) {
+        ReplyDTO reply = new ReplyDTO();
+        reply.setResponseNo(replyNo);
+        reply.setResponseContent(responseContent);
+        postService.updateReply(reply);
+        return "redirect:/board/view/" + postNo; // Redirect back to the post view
     }
 }
