@@ -1,5 +1,6 @@
 package com.ohgiraffers.techmya.shop.order.model.service;
 
+import com.ohgiraffers.techmya.admin.order.model.dto.OrderDTO;
 import com.ohgiraffers.techmya.shop.order.model.dto.OrderCartDTO;
 import com.ohgiraffers.techmya.shop.order.model.dao.OrderMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -71,6 +74,11 @@ public class OrderServiceImpl implements OrderService{
 
         // 변경된 총 주문 가격 정보를 업데이트
         orderMapper.updateOrder(product);
+    }
+
+    @Override
+    public List<OrderDTO> findAllOrderProduct() {
+        return orderMapper.findAllOrderProduct();
     }
 
     private boolean hasOptions(int productNo) {
