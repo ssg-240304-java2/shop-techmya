@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ohgiraffers.techmya.admin.product.model.dao.PostMapper">
+<mapper namespace="com.ohgiraffers.techmya.admin.product.model.dao.ProductPostMapper">
     <!-- 1. 판매 글 조회 -->
     <resultMap id="productAndPorductPostResultMap" type="com.ohgiraffers.techmya.admin.product.model.dto.ProductAndProductPostDTO">
         <id property="productPostNo" column="product_post_no"/>
@@ -30,10 +30,12 @@
             view_count,
             enrolled_date,
             modified_date,
+
             P.product_no,
             P.product_name,
             P.product_price,
             P.category_code,
+        
             C.category_name
         FROM
             product_post
