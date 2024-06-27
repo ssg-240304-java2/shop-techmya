@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<<html
+        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{common/shop/layouts/shoplayouts}">
+
+<head>
+  <title>shop - orderproduct</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="/shop/order-assets/products-assets/img/apple-icon.png">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+  <link rel="stylesheet" href="/shop/order-assets/products-assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/shop/order-assets/products-assets/css/templatemo.css">
+  <link rel="stylesheet" href="/shop/order-assets/products-assets/css/custom.css">
+
+  <!-- Load fonts style after rendering the layout styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+  <link rel="stylesheet" href="/shop/order-assets/products-assets/css/fontawesome.min.css">
+
+</head>
+
+<body>
+
+<!-- Start Content -->
+<div layout:fragment="content">
+  <h1>주문 인서트 테스트 페이지</h1>
+
+  <h3>선택 상품 장바구니에 저장하기</h3>
+
+  <form action="/shop/cart" method="post">
+    <label>회원번호: </label><input type="text" name="userNo"><br>
+    <label>상품번호: </label><input type="text" name="productNo"><br>
+    <label>옵션번호: </label><input type="text" name="productOptionNo"><br>
+    <label>주문수량: </label><input type="text" name="detailOrderAmount"><br>
+
+    <input type="submit" value="저장"/>
+  </form>
+
+  <br><br>
+  <!--  장바구니 -->
+  <button onclick="location.href='/shop/cart'">장바구니 바로가기</button>
+
+</div>
+<!-- Start Script -->
+<script src="/shop/order-assets/products-assets/js/jquery-1.11.0.min.js"></script>
+<script src="/shop/order-assets/products-assets/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/shop/order-assets/products-assets/js/bootstrap.bundle.min.js"></script>
+<script src="/shop/order-assets/products-assets/js/templatemo.js"></script>
+<script src="/shop/order-assets/products-assets/js/custom.js"></script>
+<!-- End Script -->
+
+
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 package com.ohgiraffers.techmya.admin.order.model.dto;
 
+import com.ohgiraffers.techmya.shop.order.model.dto.OrderCartDTO;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.sql.Date;
 
@@ -18,5 +18,5 @@ public class OrderDTO {
     private int userNo;
     private int orderStatusNo;
 
-    private OrderDetailDTO orderDetail;
+    private OrderCartDTO orderDetail;
 }
