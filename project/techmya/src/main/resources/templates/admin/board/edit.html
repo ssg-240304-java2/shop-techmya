@@ -31,7 +31,23 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">이미지 업로드</label>
+                <label for="userNo" class="form-label">작성자 번호</label>
+                <input type="number" class="form-control" id="userNo" name="userNo" th:value="${post.userNo}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">기존 이미지</label>
+                <div th:each="image : ${postImages}">
+                    <img th:src="@{/uploads/{imageName}(imageName=${image.postImageStoredFileName})}" alt="Post Image" class="img-fluid" style="max-width: 200px;"/>
+                </div>
+                <div>
+                    <input type="radio" id="keepImages" name="deleteImages" value="keep" checked>
+                    <label for="keepImages">이미지 유지</label>
+                    <input type="radio" id="deleteImages" name="deleteImages" value="delete">
+                    <label for="deleteImages">이미지 삭제</label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">새 이미지 업로드</label>
                 <input type="file" class="form-control" id="image" name="image">
             </div>
             <button type="submit" class="btn btn-primary">수정</button>

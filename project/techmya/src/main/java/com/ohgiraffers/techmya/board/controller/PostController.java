@@ -2,7 +2,6 @@ package com.ohgiraffers.techmya.board.controller;
 
 import com.ohgiraffers.techmya.board.model.dto.PostDTO;
 import com.ohgiraffers.techmya.board.model.dto.PostImageDTO;
-import com.ohgiraffers.techmya.board.model.dto.ReplyDTO;
 import com.ohgiraffers.techmya.board.model.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,14 +37,15 @@ public class PostController {
 
         if (boardNo != null) {
             posts = postService.getPostsByBoardType(boardNo);
-            boardTitle = boardNo == 1 ? "공지사항 및 문의" : "자주 묻는 질문";
+            boardTitle = (boardNo == 1 || boardNo == 2) ? "Notice and Questions" : "FAQ";
         } else {
             posts = postService.getAllPosts();
-            boardTitle = "모든 게시글";
+            boardTitle = "All Posts";
         }
 
         model.addAttribute("posts", posts);
         model.addAttribute("boardTitle", boardTitle);
+        model.addAttribute("boardNo", boardNo);
         return "admin/board/boardmain";
     }
 
@@ -53,10 +53,8 @@ public class PostController {
     public String view(@PathVariable("postNo") int postNo, Model model) {
         PostDTO post = postService.getPost(postNo);
         List<PostImageDTO> postImages = postService.getPostImagesByPostId(postNo);
-        List<ReplyDTO> replies = postService.getRepliesByPostId(postNo);
         model.addAttribute("post", post);
         model.addAttribute("postImages", postImages);
-        model.addAttribute("replies", replies);
         return "admin/board/view";
     }
 
@@ -120,7 +118,8 @@ public class PostController {
                            @RequestParam("isPublic") Boolean isPublic,
                            @RequestParam("userNo") Integer userNo,
                            @RequestParam("boardNo") Integer boardNo,
-                           @RequestParam(value = "image", required = false) MultipartFile image) {
+                           @RequestParam(value = "image", required = false) MultipartFile image,
+                           @RequestParam("deleteImages") String deleteImages) {
         PostDTO post = postService.getPost(postNo);
         post.setPostTitle(title);
         post.setPostContent(content);
@@ -129,6 +128,21 @@ public class PostController {
         post.setBoardNo(boardNo);
         postService.updatePost(post);
 
+        // 이미지 삭제 처리
+        if ("delete".equals(deleteImages)) {
+            List<PostImageDTO> postImages = postService.getPostImagesByPostId(postNo);
+            for (PostImageDTO postImage : postImages) {
+                postService.deletePostImage(postImage.getPostImageNo());
+                Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(postImage.getPostImageStoredFileName());
+                try {
+                    Files.deleteIfExists(targetLocation);
+                } catch (IOException ex) {
+                    throw new RuntimeException("Could not delete file " + postImage.getPostImageStoredFileName() + ". Please try again!", ex);
+                }
+            }
+        }
+
+        // 새 이미지 업로드 처리
         if (image != null && !image.isEmpty()) {
             String fileName = StringUtils.cleanPath(image.getOriginalFilename());
             Path targetLocation = Paths.get(uploadDir).toAbsolutePath().normalize().resolve(fileName);
@@ -152,40 +166,15 @@ public class PostController {
     }
 
     @GetMapping("/delete/{postNo}")
-    public String delete(@PathVariable("postNo") int postNo, @RequestParam("boardNo") int boardNo) {
+    public String deletePost(@PathVariable("postNo") int postNo) {
         postService.deletePost(postNo);
-        return "redirect:/board/boardmain?boardNo=" + boardNo; // 삭제 후 리다이렉트할 경로 설정
+        return "redirect:/board/boardmain";
     }
 
-    @PostMapping("/submitReply")
-    public String submitReply(@RequestParam("postNo") int postNo,
-                              @RequestParam("responseContent") String responseContent,
-                              @RequestParam("userNo") int userNo) {
-        ReplyDTO reply = new ReplyDTO();
-        reply.setPostNo(postNo);
-        reply.setResponseContent(responseContent);
-        reply.setUserNo(userNo);
-        reply.setCreatedDate(new Date());
-        reply.setPublic(true); // Assuming the reply is public by default
-        postService.insertReply(reply);
-        return "redirect:/board/view/" + postNo; // Redirect back to the post view
-    }
-
-    @GetMapping("/deleteReply")
-    public String deleteReply(@RequestParam("replyNo") int replyNo,
-                              @RequestParam("postNo") int postNo) {
-        postService.deleteReply(replyNo);
-        return "redirect:/board/view/" + postNo; // Redirect back to the post view
-    }
-
-    @PostMapping("/editReply")
-    public String editReply(@RequestParam("replyNo") int replyNo,
-                            @RequestParam("postNo") int postNo,
-                            @RequestParam("responseContent") String responseContent) {
-        ReplyDTO reply = new ReplyDTO();
-        reply.setResponseNo(replyNo);
-        reply.setResponseContent(responseContent);
-        postService.updateReply(reply);
-        return "redirect:/board/view/" + postNo; // Redirect back to the post view
+    @GetMapping("/admin/main")
+    public String adminMain(Model model) {
+        List<PostDTO> posts = postService.getAllPosts();
+        model.addAttribute("posts", posts);
+        return "admin/admin_main";
     }
 }

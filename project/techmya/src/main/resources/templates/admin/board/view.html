@@ -19,18 +19,8 @@
                     <img th:src="@{/uploads/{imageName}(imageName=${image.postImageStoredFileName})}" alt="Post Image" class="img-fluid"/>
                 </div>
                 <a th:href="@{/board/edit/{postNo}(postNo=${post.postNo})}" class="btn btn-warning">수정</a>
-                <a th:href="@{/board/delete(postNo=${post.postNo})}" class="btn btn-danger">삭제</a>
-            </div>
-        </div>
-        <div class="mt-4">
-            <h5>댓글</h5>
-            <div th:each="reply : ${replies}">
-                <div class="card mb-2">
-                    <div class="card-body">
-                        <p class="card-text" th:text="${reply.responseContent}">댓글 내용</p>
-                        <a th:href="@{/board/deleteReply(replyNo=${reply.responseNo}, postNo=${post.postNo})}" class="btn btn-danger btn-sm">삭제</a>
-                    </div>
-                </div>
+                <a th:href="@{/board/delete/{postNo}(postNo=${post.postNo})}" class="btn btn-danger"
+                   onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</a>
             </div>
         </div>
     </div>

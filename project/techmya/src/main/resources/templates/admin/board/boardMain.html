@@ -10,7 +10,14 @@
 <div layout:fragment="content" class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-2" th:text="${boardTitle}">게시판 메인</h4>
-        <div class="card">
+
+        <div class="mb-3">
+            <a th:href="@{/board/write}" class="btn btn-success">글쓰기</a>
+        </div>
+
+        <!-- QNA 게시판 -->
+        <div class="card" th:if="${boardNo == 1 || boardNo == 2}">
+            <h5 class="card-header">QNA</h5>
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <thead>
@@ -23,7 +30,34 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="post : ${posts}">
+                    <tr th:each="post : ${posts}" th:if="${post.boardNo == 1 || post.boardNo == 2}">
+                        <td th:text="${post.postNo}">1</td>
+                        <td th:text="${post.postTitle}">제목</td>
+                        <td th:text="${post.userNo}">작성자</td>
+                        <td th:text="${#dates.format(post.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</td>
+                        <td><a th:href="@{/board/view/{postNo}(postNo=${post.postNo})}" class="btn btn-primary">보기</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FAQ 게시판 -->
+        <div class="card" th:if="${boardNo == 3}">
+            <h5 class="card-header">FAQ</h5>
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr class="text-nowrap">
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>보기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="post : ${posts}" th:if="${post.boardNo == 3}">
                         <td th:text="${post.postNo}">1</td>
                         <td th:text="${post.postTitle}">제목</td>
                         <td th:text="${post.userNo}">작성자</td>
