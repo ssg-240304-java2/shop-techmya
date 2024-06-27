@@ -1,68 +1,113 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
-  <title>TECHMYA OUT MANAGE</title>
-  <!-- Favicon-->
-  <link rel="icon" type="image/x-icon" href="/stock/assets/favicon.ico" />
-  <!-- Core theme CSS (includes Bootstrap)-->
-  <link href="/stock/css/styles.css" rel="stylesheet" />
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <meta charset="UTF-8">
+  <title>Admin - Stock</title>
 </head>
 <body>
+<!-- Content wrapper -->
 
-<div class="d-flex" id="wrapper">
-  <!-- Sidebar-->
-  <div class="border-end bg-white" id="sidebar-wrapper" align="center">
-    <div class="sidebar-heading border-bottom bg-light">TECHMYA-CAT</div>
-    <div class="list-group list-group-flush ">
-      <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Order Manage</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Sell Product</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3" id="stockMenu" href="/stock/stockmain">Stock Manage</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3 menubar" href="/stock/stockmanage">> Stock</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3 menubar" href="/stock/inmanage">> In Warehousing</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3 menubar" id="outManage" href="/stock/outmanage">> Out Warehousing</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Member Dashboard</a>
-      <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Board</a>
-    </div>
-  </div>
+<div layout:fragment="content" class="content-wrapper">
+  <!-- Content -->
 
-  <!-- Page content wrapper-->
-  <div id="page-content-wrapper" th:fragment="commontopbar">
-    <!-- Top navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-      <div class="container-fluid">
-        <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button> <h1 id="techName">TECHMYA-CAT 재고 출고 메뉴</h1>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-            <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#!">Action</a>
-                <a class="dropdown-item" href="#!">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#!">Something else here</a>
-              </div>
-            </li>
-          </ul>
-        </div>
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-2">OutWarehousing MANAGE</h4>
+
+    <span style="float:left">
+    <form action="/stock/instock" method="post">
+      <button type="submit">입고</button>
+    </form>
+    </span>
+    <form action="/stock/stockmain" method="post">
+      <button type="submit">재고</button>
+    </form>
+
+    <!-- Responsive Table -->
+    <div class="card">
+      <!--            <h5 class="card-header"></h5>-->
+      <div class="table-responsive text-nowrap">
+        <br>
+        <form action="/stock/stocklist" method="get">
+          <input type="text" name="searchInfo" id="searchInfo">
+          <button type="submit">상품명 검색</button>
+        </form>
+        <table class="table">
+          <thead>
+          <tr class="text-nowrap">
+            <th></th>
+            <th>Stock No</th>
+            <th>Product No</th>
+            <th>Product Name</th>
+            <th>Product OptionNo</th>
+            <th>Product Option</th>
+            <th>Product Quantity</th>
+            <th>Product Status</th>
+          </tr>
+          <tr th:each="stock : ${ stockList }">
+            <td></td>
+            <td th:text="${ stock.stockNo }"></td>
+            <td th:text="${ stock.productNo }"></td>
+            <td th:text="${ stock.productName }"></td>
+            <td th:text="${ stock.productOptionNo }"></td>
+            <td th:text="${ stock.productOption }"></td>
+            <td th:text="${ stock.stockQuantity }"></td>
+            <td th:text="${ stock.productStatus }"></td>
+          </tr>
+          </thead>
+        </table>
+        <br>
+        <hr>
+        <form action="/stock/stockinput" method="post" id="inputFrom">
+          <lable>상품번호 : </lable><input type="text" name="number"/><br>
+          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>
+          <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp수량 : </lable><input type="text" name="amount"/><br>
+          <button type="submit">검색</button>
+        </form>
+        <script>
+        </script>
       </div>
-    </nav>
-    <br>
-    <!-- Page content-->
+    </div>
+
+    <div class="content-backdrop fade"></div>
   </div>
+  <!-- Footer -->
+  <footer class="content-footer footer bg-footer-theme" style="position:absolute; bottom:0px;">
+    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+      <div class="mb-2 mb-md-0">
+        ©
+        <script>
+          document.write(new Date().getFullYear());
+        </script>
+        , made with ❤️ by
+        <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+      </div>
+      <div>
+        <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
+        <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+
+        <a
+                href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                target="_blank"
+                class="footer-link me-4"
+        >Documentation</a
+        >
+
+        <a
+                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                target="_blank"
+                class="footer-link me-4"
+        >Support</a
+        >
+      </div>
+    </div>
+  </footer>
+  <!-- / Footer -->
+
+  <div class="content-backdrop fade"></div>
 </div>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/stock/js/scripts.js"></script>
+<!-- Content wrapper -->
 </body>
 </html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{common/admin/layouts/navlayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Product Post Regist</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Content wrapper -->
+<div layout:fragment="content" class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-2">Product Post Regist</h4>
+
+        <!-- Responsive Table -->
+        <div class="card">
+            <!--            <h5 class="card-header"></h5>-->
+            <div class="table-responsive text-nowrap">
+                <h1>⭐⭐⭐⭐판매글 등록⭐⭐⭐⭐</h1>
+                <form action="/product/postregist" method="post" id="postRegistForm">
+                    <label for="parentCategory">상품 카테고리</label>
+                    <select id="parentCategory" name="parentCategory">
+                        <option value="">대분류 선택</option>
+                        <option th:each="category : ${ parentCategories }"
+                                th:value="${ category.categoryCode }"
+                                th:text="${ category.categoryName }"></option>
+                    </select>
+                    <br>
+                    <label for="subCategory">상품 카테고리</label>
+                    <select id="subCategory" name="subCategory">
+                        <option value="">소분류 선택</option>
+                    </select>
+                    <br>
+                    <label for="productName">상품</label>
+                    <select id="productName" name="productName">
+                        <option value="">상품 선택</option>
+                        <option th:each="product : ${ productList }"
+                                th:value="${ product.productNo }"
+                                th:text="${ product.productName }"></option>
+                    </select>
+                    <br>
+                    <label>상품 설명 : </label><input type="text" name="productDesc"><br>
+                    <label for="productStatus">상품 상태</label>
+                    <select id="productStatus" name="productStatus">
+                        <option value="">상태 선택</option>
+                        <option value="상품 준비중">상품 준비중</option>
+                        <option value="판매중">판매중</option>
+                        <option value="품절">품절</option>
+                        <option value="판매중지">판매중지</option>
+                    </select>
+                    <br>
+                    <label>배송 기간 (일) : </label><input type="number" name="shippingPeriod" min="1"><br>
+                    <button id="postRegistSubmit" type="submit">판매글 등록</button>
+                </form>
+
+                <script>
+                    $(document).ready(function() {
+                        $('#parentCategory').change(function() {
+                            let parentId = $(this).val();
+
+                            if (parentId) {
+                                $.ajax({
+                                    url: '/product/postregist/' + parentId + '/subcategories',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        let subCategorySelect = $('#subCategory');
+                                        subCategorySelect.empty();
+                                        subCategorySelect.append('<option value="">소분류 선택</option>');
+                                        $.each(data, function (key, value) {
+                                            subCategorySelect.append('<option value="' + value.categoryCode + '">' + value.categoryName + '</option>');
+                                        });
+                                    },
+                                    error: function (error) {
+                                        alert("Error : ", error);
+                                    }
+                                });
+                            } else {
+                                $('subCategory').empty();
+                                $('subCategory').append('<option value="">소분류 선택</option>');
+                            }
+                        })
+                    })
+                </script>
+
+                <script>
+                    $(document).ready(function() {
+                        $('#subCategory').change(function() {
+                            let subCategoryNo = $(this).val();
+
+                            if (subCategoryNo) {
+                                $.ajax({
+                                    url: '/product/postregist/' + subCategoryNo + '/productList',
+                                    type: 'GET',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        let productSelect = $('#productName');
+                                        productSelect.empty();
+                                        productSelect.append('<option value="">상품 선택</option>');
+                                        $.each(data, function (key, value) {
+                                            productSelect.append('<option value="' + value.productNo + '">' + value.productName + '</option>');
+                                        });
+                                    },
+                                    error: function (error) {
+                                        console.log("productSelect Error : ", error);
+                                    }
+                                });
+                            } else {
+                                $('productName').empty();
+                                $('productName').append('<option value="">상품 선택</option>');
+                            }
+                        })
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+</body>
+
+</html>
