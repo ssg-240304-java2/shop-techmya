@@ -33,7 +33,30 @@
   </div>
 
   <!-- Page content wrapper-->
-  <div id="page-content-wrapper" th:fragment="commontopbar">
+  <form action="/stock/instocklist" method="post">
+    <button type="submit">재고조회</button>
+  </form>
+  <table class="table">
+    <thead>
+    <tr class="text-nowrap">
+      <th></th>
+      <th>InStock No</th>
+      <th>Product No</th>
+      <th>Product Name</th>
+      <th>Product Option</th>
+      <th>Product Status</th>
+    </tr>
+    <tr th:each="instock : ${ instockList }">
+      <td th:text="${ stock.stockNo }"></td>
+      <td th:text="${ stock.stockName }"></td>
+      <td th:text="${ stock.stockOptions }"></td>
+      <td th:text="${ stock.stockQuantity }"></td>
+      <td th:text="${ stock.stockStatus }"></td>
+    </tr>
+    </thead>
+  </table>
+
+
     <!-- Top navigation-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <div class="container-fluid">

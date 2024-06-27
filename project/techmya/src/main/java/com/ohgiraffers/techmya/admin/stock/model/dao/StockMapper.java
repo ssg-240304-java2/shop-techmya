@@ -7,5 +7,14 @@ import java.util.List;
 
 @Mapper
 public interface StockMapper {
+
     List<outputStockDTO> searchStock(String searchInfo);
+
+    Integer checkOption(int number, String option);
+
+    int inputStock(int number, int optionNo, int amount );
+
+    int searchOpt(String option);
+
+    void inputStock2(int num, int amount);
 }
