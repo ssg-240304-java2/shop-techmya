@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{common/admin/layouts/navlayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Product</title>
+</head>
+
+<body>
+
+<!-- Content wrapper -->
+<div layout:fragment="content" class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-2">Product Tables</h4>
+
+        <button onclick="location.href='/product/regist'">상품 등록</button>
+
+        <!-- Responsive Table -->
+        <div class="card">
+            <!--            <h5 class="card-header"></h5>-->
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr class="text-nowrap">
+                        <th> </th>
+                        <th>Number</th>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Product Category</th>
+                    </tr>
+                    <tr th:each="product : ${ productList }">
+                        <th> </th>
+                        <td th:text="${ product.productNo}"></td>
+                        <td th:text="${ product.productName}"></td>
+                        <td th:text="${ product.productPrice}"></td>
+                        <td th:text="${ product.categoryName}"></td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+</body>
+
+</html>
