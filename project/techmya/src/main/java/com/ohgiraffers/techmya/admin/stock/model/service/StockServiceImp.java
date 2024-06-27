@@ -2,6 +2,7 @@ package com.ohgiraffers.techmya.admin.stock.model.service;
 
 
 import com.ohgiraffers.techmya.admin.stock.model.dao.StockMapper;
+import com.ohgiraffers.techmya.admin.stock.model.dto.InWHDTO;
 import com.ohgiraffers.techmya.admin.stock.model.dto.inputStockDTO;
 import com.ohgiraffers.techmya.admin.stock.model.dto.outputStockDTO;
 import org.springframework.stereotype.Service;
@@ -63,5 +64,11 @@ public class StockServiceImp implements StockService {
     @Override
     public void inputStock2(int num, int amount) {
         stockMapper.inputStock2(num, amount);
+    }
+
+
+    @Override
+    public List<InWHDTO> findInstock(String searchInstock) {
+        return stockMapper.findInstock(searchInstock);
     }
 }
