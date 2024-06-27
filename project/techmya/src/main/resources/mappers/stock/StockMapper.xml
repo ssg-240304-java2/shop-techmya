@@ -13,6 +13,14 @@
         <result property="productStatus" column="product_status"/>
     </resultMap>
 
+    <resultMap id="InstockResultMap" type="com.ohgiraffers.techmya.admin.stock.model.dto.InWHDTO">
+        <id property="inNo" column="in_no"/>
+        <result property="productName" column="product_name"/>
+        <result property="productOption" column="product_option_name"/>
+        <result property="inQuantity" column="in_quantity"/>
+        <result property="inDate" column="in_date"/>
+    </resultMap>
+
     <select id="searchStock" resultMap="stockResultMap">
         SELECT
             q.stock_no stock_no,
@@ -38,6 +46,7 @@
         left JOIN product_post d
         ON q.product_no = d.product_no
             WHERE q.product_name like CONCAT('%', #{ searchInfo }, '%')
+        ORDER BY stock_no
     </select>
 
     <select id="searchOpt">
@@ -62,4 +71,25 @@
     <insert id="inputStock2">
         INSERT INTO stock (stock_quantity, product_no) VALUES ( #{amount} , #{ num } )
     </insert>
+
+
+    <select id="findInstock" resultMap="InstockResultMap">
+        SELECT
+            in_no,
+            product_name,
+            product_option_name,
+            in_quantity,
+            DATE_FORMAT(in_date, '%Y-%m-%d') in_date
+        FROM (
+        SELECT
+            a.in_no, a.in_quantity, a.in_date,
+            d.product_name, q.product_option_name
+        FROM in_warehouse a
+            LEFT JOIN stock b
+                ON a.stock_no = b.stock_no
+            JOIN product d
+                ON b.product_no = d.product_no
+            JOIN product_option q
+                ON b.product_option_no = q.product_option_no)t
+    </select>
 </mapper>
