@@ -39,8 +39,6 @@
 
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
-        <!-- Menu -->
-
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
             <div class="app-brand demo">
                 <a href="/admin/main" class="app-brand-link">
@@ -58,7 +56,8 @@
 
             <ul class="menu-inner py-1">
                 <!-- Member -->
-                <li class="menu-item active">
+                <li class="menu-item" th:classappend="${currentPage == 'member'} ? 'active'">
+
                     <a href="/admin/main" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-crown"></i>
                         <div data-i18n="Member">Member</div>
@@ -66,7 +65,7 @@
                 </li>
 
                 <!-- Order -->
-                <li class="menu-item">
+                <li class="menu-item" th:classappend="${currentPage == 'order'} ? 'active'">
                     <a href="/order/ordermain" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-cart-alt"></i>
                         <div data-i18n="Order">Order</div>
@@ -74,7 +73,7 @@
                 </li>
 
                 <!-- Product -->
-                <li class="menu-item">
+                <li class="menu-item" th:classappend="${currentPage == 'product'} ? 'active'">
                     <a href="#Prodcut" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
                         <div data-i18n="Product">Product</div>
@@ -82,7 +81,7 @@
                 </li>
 
                 <!-- Stock -->
-                <li class="menu-item">
+                <li class="menu-item" th:classappend="${currentPage == 'stock'} ? 'active'">
                     <a href="/stock/stockmain" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-package"></i>
                         <div data-i18n="Stock">Stock</div>
@@ -90,7 +89,7 @@
                 </li>
 
                 <!-- Board -->
-                <li class="menu-item">
+                <li class="menu-item" th:classappend="${currentPage == 'board'} ? 'active'">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-comment-dots"></i>
                         <div data-i18n="chat">Board</div>
@@ -112,6 +111,85 @@
             </ul>
         </aside>
         <!-- / Menu -->
+<!--        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">-->
+<!--            <div class="app-brand demo">-->
+<!--                <a href="/admin/main" class="app-brand-link">-->
+<!--            <span class="app-brand-logo demo">-->
+<!--                <img src="/admin/assets/img/logo/techmya-logo.png" alt="logo" height="20" >-->
+<!--            </span>-->
+<!--                </a>-->
+
+<!--                <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">-->
+<!--                    <i class="bx bx-chevron-left bx-sm align-middle"></i>-->
+<!--                </a>-->
+<!--            </div>-->
+
+<!--            <div class="menu-inner-shadow"></div>-->
+
+<!--            <ul class="menu-inner py-1">-->
+<!--                &lt;!&ndash; Member &ndash;&gt;-->
+<!--                &lt;!&ndash; Use Thymeleaf's th:classappend to conditionally add 'active' class &ndash;&gt;-->
+<!--                <li class="menu-item" th:classappend="${currentPage == 'member'} ? 'active'">-->
+<!--                    <a href="/admin/main" class="menu-link">-->
+<!--                        <i class="menu-icon tf-icons bx bx-crown"></i>-->
+<!--                        <div data-i18n="Member">Member</div>-->
+<!--                    </a>-->
+<!--                </li>-->
+
+<!--                &lt;!&ndash; Order &ndash;&gt;-->
+<!--                &lt;!&ndash; Use Thymeleaf's th:classappend to conditionally add 'active' class &ndash;&gt;-->
+<!--                <li class="menu-item" th:classappend="${currentPage == 'order'} ? 'active'">-->
+<!--                    <a href="/order/ordermain" class="menu-link">-->
+<!--                        <i class="menu-icon tf-icons bx bx-cart-alt"></i>-->
+<!--                        <div data-i18n="Order">Order</div>-->
+<!--                    </a>-->
+<!--                </li>-->
+
+<!--                &lt;!&ndash; Product &ndash;&gt;-->
+<!--                &lt;!&ndash; Use Thymeleaf's th:classappend to conditionally add 'active' class &ndash;&gt;-->
+<!--                <li class="menu-item" th:classappend="${currentPage == 'product'} ? 'active'">-->
+<!--                    <a href="#Product" class="menu-link">-->
+<!--                        <i class="menu-icon tf-icons bx bx-purchase-tag"></i>-->
+<!--                        <div data-i18n="Product">Product</div>-->
+<!--                    </a>-->
+<!--                </li>-->
+
+<!--                &lt;!&ndash; Stock &ndash;&gt;-->
+<!--                &lt;!&ndash; Use Thymeleaf's th:classappend to conditionally add 'active' class &ndash;&gt;-->
+<!--                <li class="menu-item" th:classappend="${currentPage == 'stock'} ? 'active'">-->
+<!--                    <a href="/stock/stockmain" class="menu-link">-->
+<!--                        <i class="menu-icon tf-icons bx bx-package"></i>-->
+<!--                        <div data-i18n="Stock">Stock</div>-->
+<!--                    </a>-->
+<!--                </li>-->
+
+<!--                &lt;!&ndash; Board &ndash;&gt;-->
+<!--                &lt;!&ndash; Use Thymeleaf's th:classappend to conditionally add 'active' class &ndash;&gt;-->
+<!--                <li class="menu-item" th:classappend="${currentPage == 'board'} ? 'active'">-->
+<!--                    <a href="javascript:void(0);" class="menu-link menu-toggle">-->
+<!--                        <i class="menu-icon tf-icons bx bx-comment-dots"></i>-->
+<!--                        <div data-i18n="Board">Board</div>-->
+<!--                    </a>-->
+
+<!--                    &lt;!&ndash; Nested menu items also using conditional logic &ndash;&gt;-->
+<!--                    <ul class="menu-sub">-->
+<!--                        <li class="menu-item" th:classappend="${currentPage == 'qna'} ? 'active'">-->
+<!--                            <a href="#/board/boardmain" class="menu-link">-->
+<!--                                <div data-i18n="Without menu">QNA</div>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="menu-item" th:classappend="${currentPage == 'faq'} ? 'active'">-->
+<!--                            <a href="/board/boardmain" class="menu-link">-->
+<!--                                <div data-i18n="Without navbar">FAQ</div>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </aside>-->
+
+
+
 
         <!-- Layout container -->
         <div class="layout-page">
@@ -144,7 +222,7 @@
 
                     <ul class="navbar-nav flex-row align-items-center ms-auto">
                         <!-- Place this tag where you want the button to render. -->
-                        <!-- <li class="nav-item lh-1 me-3">
+                        <li class="nav-item lh-1 me-3">
                           <a
                             class="github-button"
                             href="https://github.com/themeselection/sneat-html-admin-template-free"
@@ -154,7 +232,7 @@
                             aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
                             >Star</a
                           >
-                        </li> -->
+                        </li>
 
                         <!-- User -->
                         <li class="nav-item navbar-dropdown dropdown-user dropdown">
