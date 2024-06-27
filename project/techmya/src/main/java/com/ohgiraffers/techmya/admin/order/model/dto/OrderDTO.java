@@ -4,6 +4,7 @@ import com.ohgiraffers.techmya.shop.order.model.dto.OrderCartDTO;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,9 +15,10 @@ public class OrderDTO {
 
     private int orderNo;
     private int orderPrice;
-    private Date orderDate;
-    private int userNo;
-    private int orderStatusNo;
+    private String orderDate;
+    private String userId;
 
-    private OrderCartDTO orderDetail;
+//    private List<OrderDetailDTO> orderDetailList;
+    private String orderStatus;
+
 }

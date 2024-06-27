@@ -31,7 +31,7 @@
     <script>
         window.onload = function() {
             // flash message를 확인하고 알림을 띄우기
-            let message = '<c:out value="${message}" />';
+            let message = '[[${message}]]';
             if (message) {
                 alert(message);
             }
@@ -39,6 +39,7 @@
     </script>
 
     <table id="cart">
+    <label>상품번호: </label><input type="text" name="productNo"><br>
         <tr>
             <th>상품번호</th>
             <th>옵션번호</th>
