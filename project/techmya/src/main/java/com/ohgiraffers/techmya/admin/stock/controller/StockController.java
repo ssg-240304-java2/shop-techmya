@@ -51,7 +51,6 @@ public class StockController {
         if (optionNo != 0) {
             stockService.inputStock(num, stockService.searchOpt(option), amount);
         } else {
-            optionNo = 0;
             stockService.inputStock2(num, amount);
         }
         model.addAttribute("inputResult", "성공!!!!");

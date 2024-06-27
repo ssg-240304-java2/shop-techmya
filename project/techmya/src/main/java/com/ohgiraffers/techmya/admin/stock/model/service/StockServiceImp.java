@@ -57,7 +57,7 @@ public class StockServiceImp implements StockService {
     public int inputStock(int num, int optionNo, int amount) {
         System.out.println("optionNo = " + optionNo);
         System.out.println("amount = " + amount);
-        System.out.println("num = " + num);;
+        System.out.println("num = " + num);
         return stockMapper.inputStock(num, optionNo, amount);
     }
 
