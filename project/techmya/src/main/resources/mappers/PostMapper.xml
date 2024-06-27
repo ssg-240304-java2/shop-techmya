@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohgiraffers.techmya.board.model.dao.PostMapper">
+    <resultMap id="PostResultMap" type="com.ohgiraffers.techmya.board.model.dto.PostDTO">
+        <id property="postNo" column="post_no"/>
+        <result property="postTitle" column="post_title"/>
+        <result property="postContent" column="post_content"/>
+        <result property="isPublic" column="is_public"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="userNo" column="user_no"/>
+        <result property="boardNo" column="board_no"/>
+        <result property="boardTypeName" column="board_title"/>
+        <collection property="postImages" ofType="com.ohgiraffers.techmya.board.model.dto.PostImageDTO" column="post_no" select="selectPostImagesByPostId"/>
+    </resultMap>
+
+    <select id="selectAllPosts" resultMap="PostResultMap">
+        SELECT p.*, b.board_title
+        FROM post p
+                 JOIN board b ON p.board_no = b.board_no;
+    </select>
+
+    <select id="selectPostById" parameterType="int" resultMap="PostResultMap">
+        SELECT p.*, b.board_title
+        FROM post p
+                 JOIN board b ON p.board_no = b.board_no
+        WHERE p.post_no = #{postNo};
+    </select>
+
+    <select id="selectPostsByBoardType" parameterType="int" resultMap="PostResultMap">
+        SELECT p.*, b.board_title
+        FROM post p
+                 JOIN board b ON p.board_no = b.board_no
+        WHERE p.board_no = #{boardType}
+    </select>
+
+    <insert id="insertPost" parameterType="com.ohgiraffers.techmya.board.model.dto.PostDTO" useGeneratedKeys="true" keyProperty="postNo">
+        INSERT INTO post (post_title, post_content, is_public, created_date, user_no, board_no)
+        VALUES (#{postTitle}, #{postContent}, #{isPublic}, #{createdDate}, #{userNo}, #{boardNo})
+    </insert>
+
+    <update id="updatePost" parameterType="com.ohgiraffers.techmya.board.model.dto.PostDTO">
+        UPDATE post
+        SET post_title = #{postTitle},
+            post_content = #{postContent},
+            is_public = #{isPublic},
+            user_no = #{userNo},
+            board_no = #{boardNo}
+        WHERE post_no = #{postNo}
+    </update>
+
+    <delete id="deletePost" parameterType="int">
+        DELETE FROM post WHERE post_no = #{postNo}
+    </delete>
+
+    <delete id="deletePostImagesByPostNo" parameterType="int">
+        DELETE FROM post_img WHERE post_no = #{postNo}
+    </delete>
+
+    <select id="selectRepliesByPostId" parameterType="int" resultType="com.ohgiraffers.techmya.board.model.dto.ReplyDTO">
+        SELECT r.response_no AS responseNo,
+               r.response_content AS responseContent,
+               r.created_date AS createdDate,
+               r.is_public AS isPublic,
+               r.user_no AS userNo,
+               r.post_no AS postNo
+        FROM response r
+        WHERE r.post_no = #{postNo}
+    </select>
+
+    <insert id="insertReply" parameterType="com.ohgiraffers.techmya.board.model.dto.ReplyDTO">
+        INSERT INTO response (response_content, created_date, is_public, user_no, post_no)
+        VALUES (#{responseContent}, #{createdDate}, #{isPublic}, #{userNo}, #{postNo})
+    </insert>
+
+    <delete id="deleteReply" parameterType="int">
+        DELETE FROM response WHERE response_no = #{responseNo}
+    </delete>
+
+    <update id="updateReply" parameterType="com.ohgiraffers.techmya.board.model.dto.ReplyDTO">
+        UPDATE response
+        SET response_content = #{responseContent}
+        WHERE response_no = #{responseNo}
+    </update>
+
+    <select id="selectPostImagesByPostId" parameterType="int" resultType="com.ohgiraffers.techmya.board.model.dto.PostImageDTO">
+        SELECT pi.post_img_no AS postImageNo,
+               pi.original_file_name AS postImageOrgFileName,
+               pi.stored_file_name AS postImageStoredFileName,
+               pi.created_date AS createdDate,
+               pi.is_deleted AS isDeleted,
+               pi.post_no AS postNo
+        FROM post_img pi
+        WHERE pi.post_no = #{postNo} AND pi.is_deleted = false
+    </select>
+
+    <insert id="insertPostImage" parameterType="com.ohgiraffers.techmya.board.model.dto.PostImageDTO">
+        INSERT INTO post_img (original_file_name, stored_file_name, created_date, is_deleted, post_no)
+        VALUES (#{postImageOrgFileName}, #{postImageStoredFileName}, #{createdDate}, #{isDeleted}, #{postNo})
+    </insert>
+
+    <update id="deletePostImage" parameterType="int">
+        UPDATE post_img SET is_deleted = true WHERE post_img_no = #{postImageNo}
+    </update>
+</mapper>

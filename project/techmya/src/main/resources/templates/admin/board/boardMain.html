@@ -4,21 +4,12 @@
       layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Posts</title>
+    <title>게시판 메인</title>
 </head>
 <body>
-<!-- Content wrapper -->
 <div layout:fragment="content" class="content-wrapper">
-    <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-2">게시글 목록</h4>
-
-        <!-- Add Post Button -->
-        <div class="mb-3">
-            <a href="/board/write" class="btn btn-success">글쓰기</a>
-        </div>
-
-        <!-- Responsive Table -->
+        <h4 class="fw-bold py-3 mb-2" th:text="${boardTitle}">게시판 메인</h4>
         <div class="card">
             <div class="table-responsive text-nowrap">
                 <table class="table">
@@ -29,7 +20,6 @@
                         <th>작성자</th>
                         <th>작성일</th>
                         <th>보기</th>
-                        <th>수정</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,17 +28,14 @@
                         <td th:text="${post.postTitle}">제목</td>
                         <td th:text="${post.userNo}">작성자</td>
                         <td th:text="${#dates.format(post.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</td>
-                        <td><a th:href="@{/view(postNo=${post.postNo})}" class="btn btn-primary">보기</a></td>
-                        <td><a th:href="@{/edit(postNo=${post.postNo})}" class="btn btn-warning">수정</a></td>
+                        <td><a th:href="@{/board/view/{postNo}(postNo=${post.postNo})}" class="btn btn-primary">보기</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
     <div class="content-backdrop fade"></div>
 </div>
-<!-- Content wrapper -->
 </body>
 </html>
