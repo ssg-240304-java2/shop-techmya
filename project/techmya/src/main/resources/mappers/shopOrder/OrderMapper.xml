@@ -5,7 +5,7 @@
 <mapper namespace="com.ohgiraffers.techmya.shop.order.model.dao.OrderMapper">
     <select id="getProductPriceByProductNo" resultType="_int">
         SELECT
-        PRODUCT_PRICE
+            PRODUCT_PRICE
         FROM PRODUCT
         WHERE product_no = #{ productNo }
     </select>
@@ -21,17 +21,17 @@
         INSERT
         INTO `order`
         (
-        order_price
-        , order_date
-        , user_no
-        , order_status_no
+            order_price
+            , order_date
+            , user_no
+            , order_status_no
         )
         VALUES
         (
-        #{ totalPrice }
-        , NOW()
-        , #{ userNo }
-        , 1
+            #{ totalPrice }
+            , NOW()
+            , #{ userNo }
+            , 1
         )
         <selectKey keyProperty="orderNo" order="AFTER" resultType="_int">
             SELECT LAST_INSERT_ID()
@@ -40,8 +40,11 @@
 
         <select id="getLastOrderNo" >
             SELECT
-            LAST_INSERT_ID()
-            FROM `ORDER`
+            ORDER_NO
+            FROM
+            `order`
+            ORDER BY ORDER_NO DESC
+            LIMIT 1
         </select>
 
         <insert id="registNewCart">
@@ -103,4 +106,25 @@
             WHERE
                 ORDER_NO = #{ orderNo }
         </update>
+
+        <resultMap id="OrderListResultMap" type="com.ohgiraffers.techmya.admin.order.model.dto.OrderDTO">
+        <id property="orderNo" column="ORDER_NO"/>
+        <result property="orderPrice" column="ORDER_PRICE"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="orderStatus" column="ORDER_STATUS_NAME"/>
+        </resultMap>
+
+        <select id="findAllOrderProduct" resultMap="OrderListResultMap">
+            SELECT
+            A.ORDER_NO
+            , A.ORDER_PRICE
+            , A.ORDER_DATE
+            , C.USER_ID
+            , B.ORDER_STATUS_NAME
+            FROM `order` A JOIN order_status B on A.order_status_no = B.order_status_no
+            JOIN user_info C on A.user_no = C.user_no
+            ORDER BY A.ORDER_DATE DESC;
+        </select>
+
     </mapper>
