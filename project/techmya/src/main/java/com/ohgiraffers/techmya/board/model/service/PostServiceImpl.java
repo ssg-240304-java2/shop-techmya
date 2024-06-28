@@ -3,7 +3,6 @@ package com.ohgiraffers.techmya.board.model.service;
 import com.ohgiraffers.techmya.board.model.dao.PostMapper;
 import com.ohgiraffers.techmya.board.model.dto.PostDTO;
 import com.ohgiraffers.techmya.board.model.dto.PostImageDTO;
-import com.ohgiraffers.techmya.board.model.dto.ReplyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,11 +39,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<ReplyDTO> getRepliesByPostId(int postNo) {
-        return postMapper.selectRepliesByPostId(postNo);
-    }
-
-    @Override
     public void insertPost(PostDTO post) {
         postMapper.insertPost(post);
     }
@@ -55,28 +49,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void insertReply(ReplyDTO reply) {
-        postMapper.insertReply(reply);
-    }
-
-    @Override
     public void updatePost(PostDTO post) {
         postMapper.updatePost(post);
     }
 
     @Override
     public void deletePost(int postNo) {
-        postMapper.deletePostImagesByPostNo(postNo); // 먼저 이미지 삭제
-        postMapper.deletePost(postNo); // 그 다음 게시글 삭제
+        postMapper.deletePostImagesByPostNo(postNo);
+        postMapper.deletePost(postNo);
     }
 
     @Override
-    public void deleteReply(int replyNo) {
-        postMapper.deleteReply(replyNo);
-    }
-
-    @Override
-    public void updateReply(ReplyDTO reply) {
-        postMapper.updateReply(reply);
+    public void deletePostImage(int postImageNo) {
+        postMapper.deletePostImage(postImageNo);
     }
 }
