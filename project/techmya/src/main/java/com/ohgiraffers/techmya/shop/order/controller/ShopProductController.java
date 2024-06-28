@@ -1,6 +1,8 @@
 package com.ohgiraffers.techmya.shop.order.controller;
 
 import com.ohgiraffers.techmya.admin.order.model.dto.OrderDTO;
+import com.ohgiraffers.techmya.admin.product.model.dto.ProductAndProductPostDTO;
+import com.ohgiraffers.techmya.admin.product.model.service.ProductDisplayService;
 import com.ohgiraffers.techmya.shop.order.model.dto.OrderCartDTO;
 import com.ohgiraffers.techmya.shop.order.model.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +19,11 @@ import java.util.List;
 public class ShopProductController {
 
     private final OrderService orderService;
+    private final ProductDisplayService productDisplayService;
 
-    public ShopProductController(OrderService orderService) {
+    public ShopProductController(OrderService orderService, ProductDisplayService productDisplayService) {
         this.orderService = orderService;
+        this.productDisplayService = productDisplayService;
     }
 
     private int cartNo = 0;
@@ -28,7 +32,13 @@ public class ShopProductController {
     public String pageProductDetail() { return "shop/productdetail";}
 
     @GetMapping("/products")
-    public String pageShopProducts(){
+    public String pageShopProducts(Model model, @RequestParam(required = false) String productName) {
+        log.info("[ProductController] getAllProducts productName = {}", productName);
+
+        List<ProductAndProductPostDTO> productPostList = productDisplayService.getAllProducts(productName);
+
+        model.addAttribute("productPostList", productPostList);
+
         return "shop/products";
     }
 
