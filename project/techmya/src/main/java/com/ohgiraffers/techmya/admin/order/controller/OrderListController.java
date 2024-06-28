@@ -65,6 +65,8 @@ public class OrderListController {
         model.addAttribute("orderList", orderList);
         model.addAttribute("selectCriteria", selectCriteria);   // 모든 페이지의 정보
 
+        model.addAttribute("currentPage", "order");
+
         return "admin/order/ordermain";
     }
 }
