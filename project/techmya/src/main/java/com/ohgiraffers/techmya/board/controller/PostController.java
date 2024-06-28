@@ -46,6 +46,8 @@ public class PostController {
 
         model.addAttribute("posts", posts);
         model.addAttribute("boardTitle", boardTitle);
+        model.addAttribute("currentPage", "board"); // 네비 메뉴 활성화용
+
         return "admin/board/boardmain";
     }
 

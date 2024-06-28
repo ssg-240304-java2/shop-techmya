@@ -86,7 +86,7 @@
         </li>
 
         <!-- Order -->
-        <li class="menu-item">
+        <li class="menu-item" th:classappend="${currentPage == 'order'} ? 'active'">
           <a href="/order/ordermain" class="menu-link">
             <i class="menu-icon tf-icons bx bx-cart-alt"></i>
             <div data-i18n="Order">Order</div>
@@ -94,7 +94,7 @@
         </li>
 
         <!-- Product -->
-        <li class="menu-item">
+        <li class="menu-item" th:classappend="${currentPage == 'product'} ? 'active'">
           <a href="/product/productmain" class="menu-link">
             <i class="menu-icon tf-icons bx bx-purchase-tag"></i>
             <div data-i18n="Product">Product</div>
@@ -102,7 +102,7 @@
         </li>
 
         <!-- Stock -->
-        <li class="menu-item">
+        <li class="menu-item" th:classappend="${currentPage == 'stock'} ? 'active'">
           <a href="/stock/stockmain" class="menu-link" methods="post">
             <i class="menu-icon tf-icons bx bx-package"></i>
             <div data-i18n="Stock">Stock</div>
@@ -110,7 +110,7 @@
         </li>
 
         <!-- Board -->
-        <li class="menu-item">
+        <li class="menu-item" th:classappend="${currentPage == 'board'} ? 'active'">
           <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-comment-dots"></i>
             <div data-i18n="chat">Board</div>
@@ -119,7 +119,7 @@
           <ul class="menu-sub">
             <li class="menu-item">
               <a href="/board/boardmain" class="menu-link">
-                <div data-i18n="Without menu">Notice and Questions</div>
+                <div data-i18n="Without menu">QNA</div>
               </a>
             </li>
             <li class="menu-item">
