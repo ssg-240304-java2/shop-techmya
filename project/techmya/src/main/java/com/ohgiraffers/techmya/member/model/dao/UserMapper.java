@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -22,4 +23,5 @@ public interface UserMapper {
     UserDTO authenticateUser(@Param("userId") String userId, @Param("userPw") String userPw);
 
     void insertLog(@Param("userNo") int userNo, @Param("logDate") LocalDateTime logDate);
+    List<UserDTO> getAllUsers();
 }

@@ -2,11 +2,14 @@ package com.ohgiraffers.techmya.member.controller;
 
 import com.ohgiraffers.techmya.member.model.dto.UserDTO;
 import com.ohgiraffers.techmya.member.model.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -54,31 +57,27 @@ public class UserController {
         return "member/login";
     }
 
-
     @PostMapping("/authenticate")
-    public String authenticateUser(@RequestParam String userId, @RequestParam String userPw) {
-
-        //확인코드 쓰기
+    public String authenticateUser(@RequestParam String userId, @RequestParam String userPw, HttpSession session) {
         UserDTO authenticatedUser = userService.authenticateUser(userId, userPw);
 
-
         if (authenticatedUser != null) {
-            // User is authenticated successfully
-
-            // Log the user login
             userService.logUserLogin(authenticatedUser.getUserNo());
+            session.setAttribute("adminName", authenticatedUser.getUserName());
 
-            // Check user authorization level
             if (authenticatedUser.getUserAuth() == 1) {
-                // User is authorized as admin
-                return "/admin-main"; // Return path to admin main page
+                return "admin-main";
             } else {
-                // User is not admin, return path to regular boardMain.html
                 return "redirect:/";
             }
         } else {
-            // User authentication failed, redirect to login page
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
