@@ -70,8 +70,15 @@
                             <td class="text-black text-center" th:text="${ order.orderNo }"></td>
                             <td class="text-nowrap text-center" th:text="${ order.orderDate }"></td>
                             <td class="text-nowrap text-center" th:text="${ order.userId }"></td>
-                            <!--                         <td th:text="${ order.orderDetailList }"></td>-->
-                            <td class="text-nowrap "> 상세한 주문 내용을 확인할 수 있겠죠?</td>
+
+<!--                            <td class="text-nowrap text-left" th:text="${ order.orderDetailList }"></td>-->
+<!--                            <td class="text-nowrap "> 상세한 주문 내용을 확인할 수 있겠죠?</td>-->
+                        <td>
+                            <th:block th:each="detail, stat : ${ order.orderDetailList }">
+                                <p class="text-black text-left" th:text="${ detail.toString() }"></p>
+                            </th:block>
+                        </td>
+
                             <td class="text-nowrap text-center" th:text="${ order.orderPrice }"></td>
                             <td class="text-nowrap text-center">
                                 <span class="badge bg-primary" heigh="20" th:if="${order.orderStatus.equals('주문대기중')}">Waiting</span>

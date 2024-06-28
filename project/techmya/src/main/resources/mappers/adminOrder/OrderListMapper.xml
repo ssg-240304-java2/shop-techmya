@@ -30,7 +30,7 @@
 <!--        ORDER BY A.ORDER_DATE DESC-->
 <!--    </select>-->
 
-    <select id="findAllMenu" resultMap="OrderListResultMap">
+    <select id="findAllOrder" resultMap="OrderListResultMap">
         SELECT
         A.ORDER_NO
         , A.ORDER_PRICE
@@ -42,4 +42,30 @@
         ORDER BY A.ORDER_DATE DESC
         LIMIT #{startRow},#{limit}
     </select>
+
+    <select id="checkOrderhasOptions" parameterType="_int">
+    SELECT
+        COUNT(product_option_no)
+    FROM order_detail
+        where order_no = 26;
+    </select>
+
+    <resultMap id="DetailListResultMap" type="com.ohgiraffers.techmya.admin.order.model.dto.OrderDetailDTO">
+        <id property="productName" column="product_name"/>
+        <result property="productOptionName" column="product_option_name"/>
+        <result property="detailOrderAmount" column="detail_order_amount"/>
+        <result property="totalPrice" column="Price"/>
+    </resultMap>
+
+    <select id="detailListOpt" parameterType="_int" resultMap="DetailListResultMap">
+        SELECT
+        b.product_name,
+        c.product_option_name,
+        a.detail_order_amount,
+        ((b.Product_price + c.product_option_price) * a.detail_order_amount) Price
+        FROM order_detail a join product b on a.product_no = b.product_no
+        join product_option c on a.product_option_no = c.product_option_no
+        WHERE order_no = #{ orderNo };
+    </select>
+
 </mapper>
