@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html
-        xmlns:th="httP://www.thymeleaf.org"
+        xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{common/admin/layouts/navlayout}">
 <head>
@@ -14,97 +14,151 @@
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-2">Stock MANAGE</h4>
+        <h3 class="fw-bold py-3 mb-2">Stock Manage</h3>
 
+            <!--        <span style="float:left">-->
+<!--        <form action="/stock/instock" method="post">-->
+<!--            <button type="submit">입고</button>-->
+<!--        </form> </span>-->
+<!--        <form action="/stock/outstock" method="post">-->
+<!--            <button type="submit">출고</button>-->
+<!--        </form>-->
 
-        <span style="float:left">
-        <form action="/stock/instock" method="post">
-            <button type="submit">입고</button>
-        </form> </span>
-        <form action="/stock/outstock" method="post">
-            <button type="submit">출고</button>
-        </form>
+<!--      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  -->
 
+        <!-- Tabs -->
+            <div class="nav-align-top mb-4">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <form action="/stock/instock" method="post">
+                            <button
+                                    type="submit"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-top-home"
+                                    aria-controls="navs-top-home"
+                                    aria-selected="true"
+                            >
+                                입고
+                            </button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/stock/outstock" method="post">
+                            <button
+                                    type="submit"
+                                    class="nav-link"
+                                    role="tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#navs-top-profile"
+                                    aria-controls="navs-top-profile"
+                                    aria-selected="false"
+                            >
+                                출고
+                            </button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/stock/stockmain" method="post">
+                                <button
+                                        type="submit"
+                                        class="nav-link active"
+                                        role="tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#navs-top-profile"
+                                        aria-controls="navs-top-profile"
+                                        aria-selected="false"
+                                >
+                                    재고
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
 
-        <!-- Responsive Table -->
-        <div class="card">
-            <!--            <h5 class="card-header"></h5>-->
-            <div class="table-responsive text-nowrap">
-                <br>
-                <form action="/stock/stocklist" method="get">
-                    <input type="text" name="searchInfo" id="searchInfo">
-                    <button type="submit">상품명 검색</button></form>
-                <table class="table">
-                    <thead>
-                    <tr class="text-nowrap">
-                        <th></th>
-                        <th>Stock No</th>
-                        <th>Product No</th>
-                        <th>Product Name</th>
-                        <th>Product OptionNo</th>
-                        <th>Product Option</th>
-                        <th>Product Quantity</th>
-                        <th>Product Status</th>
-                    </tr>
-                    <tr th:each="stock : ${ stockList }">
-                        <td></td>
-                        <td th:text="${ stock.stockNo }"></td>
-                        <td th:text="${ stock.productNo }"></td>
-                        <td th:text="${ stock.productName }"></td>
-                        <td th:text="${ stock.productOptionNo }"></td>
-                        <td th:text="${ stock.productOption }"></td>
-                        <td th:text="${ stock.stockQuantity }"></td>
-                        <td th:text="${ stock.productStatus }"></td>
-                    </tr>
-                    </thead>
-                </table>
-                <br>
-                <hr>
-                <form action="/stock/stockinput" method="post" id="inputFrom">
-                    <lable>상품번호 : </lable><input type="text" name="number"/><br>
-                    <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>
-                    <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp수량 : </lable><input type="text" name="amount"/><button type="submit">등록</button><br>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm 12 text-lg-start text-center mr-4">
+                                    <form action="/stock/stocklist" method="get">
+                                <div class="nav-item d-flex align-items-center">
+                                    <i class="bx bx-search-alt-2 btn-outline-primary fs-4 lh-0"></i>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            name="searchInfo"
+                                            id="searchInfo"
+                                            placeholder="Enter Product Name..."
+                                            aria-label="Enter Product Name..."
+                                    />
+                                    <button type="submit"  class="m-lg-1 btn btn-medium btn-outline-primary">Search</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
 
-                </form>
-                <script>
-                </script>
+                        <div class="tab-pane fade show active" id="navs-top-in" role="tabpanel">
+
+                            <!-- 첫 빈칸 -->
+                            <div class="table-responsive text-nowrap">
+                                <table class="table">
+                                    <thead>
+                                    <tr class="text-nowrap">
+                                        <th></th>
+                                        <th>Stock No</th>
+                                        <th>Product No</th>
+                                        <th>Product Name</th>
+                                        <th>Product OptionNo</th>
+                                        <th>Product Option</th>
+                                        <th>Product Quantity</th>
+                                        <th>Product Status</th>
+                                    </tr>
+                                    <tr th:each="stock : ${ stockList }">
+                                        <td></td>
+                                        <td th:text="${ stock.stockNo }"></td>
+                                        <td th:text="${ stock.productNo }"></td>
+                                        <td th:text="${ stock.productName }"></td>
+                                        <td th:text="${ stock.productOptionNo }"></td>
+                                        <td th:text="${ stock.productOption }"></td>
+                                        <td th:text="${ stock.stockQuantity }"></td>
+                                        <td th:text="${ stock.productStatus }"></td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <br>
+                                <hr>
+                                <form action="/stock/stockinput" method="post" id="inputFrom">
+                                    <lable>상품번호 : </lable><input type="text" name="number"/><br>
+                                    <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp옵션 : </lable><input type="text" name="option"/><br>
+                                    <lable>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp수량 : </lable><input type="text" name="amount"/><button type="submit">등록</button><br>
+
+                                </form>
+                                <script>
+                                </script>
+                            </div>
+                        </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="navs-top-out" role="tabpanel">
+
+                            <!-- 두칸 -->
+
+                        </div>
+                <div class="tab-pane fade" id="navs-top-stock" role="tabpanel">
+
+                    <!-- 두칸 -->
+
+                </div>
+                </div>
             </div>
-        </div>
+
+
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
+
+
 
     <div class="content-backdrop fade"></div>
 </div>
-    <!-- Footer -->
-<!--    <footer class="content-footer footer bg-footer-theme" style="position:absolute; bottom:0px;">-->
-<!--        <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">-->
-<!--            <div class="mb-2 mb-md-0">-->
-<!--                ©-->
-<!--                <script>-->
-<!--                    document.write(new Date().getFullYear());-->
-<!--                </script>-->
-<!--                , made with ❤️ by-->
-<!--                <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>-->
-<!--                <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>-->
-
-<!--                <a-->
-<!--                        href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"-->
-<!--                        target="_blank"-->
-<!--                        class="footer-link me-4"-->
-<!--                >Documentation</a-->
-<!--                >-->
-
-<!--                <a-->
-<!--                        href="https://github.com/themeselection/sneat-html-admin-template-free/issues"-->
-<!--                        target="_blank"-->
-<!--                        class="footer-link me-4"-->
-<!--                >Support</a-->
-<!--                >-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </footer>-->
-    <!-- / Footer -->
 
     <div class="content-backdrop fade"></div>
 </div>
