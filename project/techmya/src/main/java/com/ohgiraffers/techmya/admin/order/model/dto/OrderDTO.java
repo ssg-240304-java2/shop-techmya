@@ -18,7 +18,15 @@ public class OrderDTO {
     private String orderDate;
     private String userId;
 
-//    private List<OrderDetailDTO> orderDetailList;
+    private List<OrderDetailDTO> orderDetailList;
+
     private String orderStatus;
 
+    public OrderDTO(int orderNo, int orderPrice, String orderDate, String userId, String orderStatus) {
+        this.orderNo = orderNo;
+        this.orderPrice = orderPrice;
+        this.orderDate = orderDate;
+        this.userId = userId;
+        this.orderStatus = orderStatus;
+    }
 }

@@ -3,6 +3,7 @@ package com.ohgiraffers.techmya.admin.order.controller;
 import com.ohgiraffers.techmya.admin.common.SelectCriteria;
 import com.ohgiraffers.techmya.admin.common.paging.Pagenation;
 import com.ohgiraffers.techmya.admin.order.model.dto.OrderDTO;
+import com.ohgiraffers.techmya.admin.order.model.dto.OrderDetailListDTO;
 import com.ohgiraffers.techmya.admin.order.model.service.OrderListService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class OrderListController {
 //    @GetMapping("/ordermain")
 //    public String allOrderList(Model model) {
 //
-//        List<OrderDTO> orderList = orderService.getOrderList();
+//        List<OrderDTO> orderList =
 //        log.info("[OrderListController] orderList >>>>>>>>>>>>>>>>>> {}", orderList);
 //
 //        model.addAttribute("orderList", orderList);
@@ -36,6 +37,7 @@ public class OrderListController {
 //        return "admin/order/ordermain";
 //    }
 //
+
 
     /**
      * 페이징 전체 조회
@@ -59,7 +61,7 @@ public class OrderListController {
 
         SelectCriteria selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
 
-        List<OrderDTO> orderList = orderService.findAllMenu(selectCriteria);
+        List<OrderDTO> orderList = orderService.findAllOrder(selectCriteria);
         log.info("[MenuController] menuList : {}", orderList);
 
         model.addAttribute("orderList", orderList);
